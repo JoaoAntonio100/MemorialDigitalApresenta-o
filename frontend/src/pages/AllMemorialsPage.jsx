@@ -1,7 +1,7 @@
 import { useMemo, useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Search, ChevronLeft, ChevronRight } from 'lucide-react';
-import { getMemoriais } from '../data/memoriaisStorage';
+import { fetchMemoriais } from '../lib/api';
 import MemorialCard from '../components/MemorialCard';
 import styles from './AllMemorialsPage.module.css';
 
@@ -11,6 +11,8 @@ export default function MemorialsPage() {
     const [searchParams, setSearchParams] = useSearchParams();
     const searchQuery = searchParams.get('search') || '';
     const [localSearch, setLocalSearch] = useState(searchQuery);
+    const [memoriais, setMemoriais] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     const activeFilter =
         searchParams.get('type') === 'historical'
@@ -61,7 +63,35 @@ export default function MemorialsPage() {
         return () => clearTimeout(timer);
     }, [localSearch]);
 
-    const todosMemoriais = getMemoriais();
+    useEffect(() => {
+        let isMounted = true;
+
+        async function loadMemoriais() {
+            try {
+                const data = await fetchMemoriais();
+                if (isMounted) {
+                    setMemoriais(data);
+                }
+            } catch (error) {
+                console.error('Erro ao carregar memoriais:', error);
+                if (isMounted) {
+                    setMemoriais([]);
+                }
+            } finally {
+                if (isMounted) {
+                    setIsLoading(false);
+                }
+            }
+        }
+
+        loadMemoriais();
+
+        return () => {
+            isMounted = false;
+        };
+    }, []);
+
+    const todosMemoriais = memoriais;
     const personalidadesImportantes = todosMemoriais.filter(m => m.tipo === 'historica');
     const memoriaisRecentes = todosMemoriais.filter(m => m.tipo === 'recente');
 
@@ -105,6 +135,19 @@ export default function MemorialsPage() {
     function clearFilters() {
         setLocalSearch(''); 
         setSearchParams({});
+    }
+
+    if (isLoading) {
+        return (
+            <div className={styles.page}>
+                <section className={styles.heroBanner}>
+                    <div className={styles.container}>
+                        <h1>Nossos Memoriais</h1>
+                        <p>Carregando memoriais do servidor...</p>
+                    </div>
+                </section>
+            </div>
+        );
     }
 
     return (

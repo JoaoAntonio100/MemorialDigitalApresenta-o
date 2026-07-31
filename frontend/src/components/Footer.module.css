@@ -1,8 +1,8 @@
 .footer {
-  background: #0066cc; 
-  color: #e6f0ff;
+  background: #1565c0;
+  color: rgba(255, 255, 255, 0.82);
   padding: 60px 0 0;
-  border-top: 4px solid #1f78d1;
+  border-top: 4px solid #ffdea5;
 }
 
 .container {
@@ -40,7 +40,7 @@
 }
 
 .logoText {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Inter', 'Segoe UI', 'Roboto', 'Arial', sans-serif;
   font-size: 1.25rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -49,20 +49,20 @@
 .brandDesc {
   font-size: 0.95rem;
   line-height: 1.6;
-  color: #a0c4ff;
+  color: rgba(255, 255, 255, 0.72);
   text-align: center; 
 }
 
 .links h4,
 .contact h4 {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Inter', 'Segoe UI', 'Roboto', 'Arial', sans-serif;
   font-size: 0.9rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #ffffff;
+  color: #ffdea5;
   margin-bottom: 24px;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 2px solid rgba(255, 222, 165, 0.22);
   padding-bottom: 12px;
 }
 
@@ -73,14 +73,14 @@
 }
 
 .links a {
-  color: #a0c4ff;
+  color: rgba(255, 255, 255, 0.76);
   font-size: 0.95rem;
   text-decoration: none;
   transition: color 0.2s;
 }
 
 .links a:hover {
-  color: #ffffff;
+  color: #ffdea5;
 }
 
 .contactItem {
@@ -88,12 +88,12 @@
   align-items: flex-start;
   gap: 12px;
   margin-bottom: 16px;
-  color: #a0c4ff;
+  color: rgba(255, 255, 255, 0.76);
 }
 
 .contactItem svg {
   flex-shrink: 0;
-  color: #ffd700;
+  color: #ffdea5;
   margin-top: 2px;
 }
 
@@ -107,12 +107,12 @@
   align-items: center;
   justify-content: center;
   padding: 24px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(255, 222, 165, 0.18);
 }
 
 .bottom p {
   font-size: 0.875rem;
-  color: #80aae6;
+  color: rgba(255, 255, 255, 0.58);
 }
 
 @media (max-width: 1024px) {

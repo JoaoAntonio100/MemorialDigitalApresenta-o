@@ -1,11 +1,37 @@
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
+import prisma from './src/lib/prisma.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
+
+app.get('/', (req, res) => {
+  return res.json({
+    mensagem: 'API do Memorial Digital funcionando.'
+  });
+});
+
+app.get('/teste-banco', async (req, res) => {
+  try {
+    const quantidade = await prisma.memorial.count();
+
+    return res.json({
+      bancoConectado: true,
+      quantidadeDeMemoriais: quantidade
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      bancoConectado: false,
+      erro: error.message
+    });
+  }
+});
 
 const memoriais = [
   {

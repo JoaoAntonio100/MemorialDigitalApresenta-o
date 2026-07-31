@@ -40,6 +40,11 @@ backend/prisma/*.db
 backend/prisma/*.sqlite
 backend/.prisma/
 
+# Arquivos gerados em execução
+backend/uploads/
+.agents/
+history/
+
 # Cache e temporários
 .cache/
 .tmp/
@@ -47,6 +52,8 @@ backend/.prisma/
 *.tmp
 *.temp
 *.local
+*.pid
+*.pid.lock
 
 # Editor / sistema
 .vscode/*

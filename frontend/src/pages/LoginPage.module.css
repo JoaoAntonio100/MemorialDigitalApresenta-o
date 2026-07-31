@@ -1,7 +1,7 @@
 .page {
   display: flex;
   flex-direction: column;
-  background: #f4f7f9;
+  background: #fbf9f8;
 }
 
 .main {
@@ -35,7 +35,7 @@
   width: calc(100% + 64px);
   height: 90px;
   margin: -40px -32px 0;
-  background: linear-gradient(to right, #015bb4, #006ad4);
+  background: #1565c0;
   display: grid;
   place-items: center;
 }
@@ -54,17 +54,20 @@
 .eyebrow {
   font-size: 0.8rem;
   font-weight: 700;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: #5d738f;
   margin-bottom: 6px;
+  font-family: 'Segoe UI', 'Arial', sans-serif;
 }
 
 .brandText h1 {
-  font-size: 1.65rem;
+  font-family: 'Inter', 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+  font-size: 2rem;
   line-height: 1.2;
   color: #1b1c19;
   font-weight: 700;
+  font-family: 'Segoe UI', 'Arial', sans-serif;
 }
 
 .intro {
@@ -161,7 +164,7 @@
   gap: 8px;
   height: 50px;
   border-radius: 999px;
-  background: linear-gradient(to right, #015bb4, #006ad4);
+  background: #002046;
   color: #ffffff;
   font-weight: 700;
   letter-spacing: 0.02em;
@@ -169,6 +172,7 @@
 }
 
 .submitButton:hover {
+  background: #1b365d;
   transform: translateY(-1px);
 }
 
@@ -196,6 +200,96 @@
   font-weight: 600;
 }
 
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(6, 18, 31, 0.52);
+  backdrop-filter: blur(4px);
+}
+
+.modalCard {
+  position: relative;
+  width: min(100%, 420px);
+  background: linear-gradient(180deg, #ffffff 0%, #f7f9fc 100%);
+  border: 1px solid rgba(0, 32, 70, 0.08);
+  border-radius: 24px;
+  box-shadow: 0 24px 70px rgba(7, 22, 38, 0.22);
+  padding: 32px 28px 24px;
+  text-align: center;
+  animation: modalFadeIn 200ms ease;
+}
+
+.modalCloseButton {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 50%;
+  background: #edf3ff;
+  color: #1e3c5f;
+  cursor: pointer;
+}
+
+.modalIconWrap {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fff1e8 0%, #ffe4d3 100%);
+  display: grid;
+  place-items: center;
+}
+
+.modalIcon {
+  color: #d96a2a;
+}
+
+.modalCard h2 {
+  margin: 0 0 8px;
+  color: #11263d;
+  font-size: 1.5rem;
+  font-family: 'Segoe UI', 'Arial', sans-serif;
+}
+
+.modalCard p {
+  margin: 0 0 18px;
+  color: #5a6471;
+  line-height: 1.6;
+  font-family: 'Segoe UI', 'Arial', sans-serif;
+}
+
+.modalButton {
+  width: 100%;
+  height: 48px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #0d3d6b 0%, #0b5bb4 100%);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 12px 28px rgba(11, 91, 180, 0.2);
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 @media (max-width: 640px) {
   .card {
     padding: 28px 20px;
@@ -213,4 +307,13 @@
     width: calc(100% + 40px);
     margin: -28px -20px 0;
   }
+}
+
+.submitButton,
+.modalButton {
+  background: #1565c0;
+}
+
+.submitButton:hover {
+  background: #0d477e;
 }

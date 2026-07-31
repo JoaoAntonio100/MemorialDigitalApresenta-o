@@ -3,3 +3,6 @@ node_modules
 .env
 
 /generated/prisma
+
+# Arquivos enviados pelos usuários são armazenados fora do Git
+/uploads/

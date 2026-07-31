@@ -1,7 +1,7 @@
 /* O layout base dividindo a tela com a Sidebar */
 .adminLayout {
     display: flex;
-    background: #f4f7f9;
+    background: #f4f8fd;
 }
 
 .mainContent {
@@ -23,7 +23,7 @@
 
 .title {
     font-size: 2rem;
-    color: #003366;
+    color: #0d477e;
     font-family: 'Inter', 'Segoe UI', 'Roboto', 'Arial', sans-serif;
     margin-bottom: 8px;
 }
@@ -62,14 +62,18 @@
 
 .statInfo h3 {
     font-size: 2rem;
-    color: #003366;
+    font-weight: 700;
+    font-family: 'Inter', 'Segoe UI', 'Roboto', sans-serif;
+    color: #0d477e;
     margin-bottom: 4px;
+    letter-spacing: -0.02em;
 }
 
 .statInfo p {
     color: #666666;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     font-weight: 500;
+    font-family: 'Inter', 'Segoe UI', 'Roboto', sans-serif;
 }
 
 .dashboardGrid {
@@ -80,7 +84,7 @@
 
 h2 {
     font-size: 1rem;
-    color: #003366;
+    color: #0d477e;
     margin-bottom: 20px;
     font-family: 'Inter', 'Segoe UI', 'Roboto', 'Arial', sans-serif;
 }
@@ -108,13 +112,13 @@ h2 {
 }
 
 .actionButton:hover {
-    border-color: #0066cc;
+    border-color: #1565c0;
     transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 102, 204, 0.1);
+    box-shadow: 0 8px 24px rgba(21, 101, 192, 0.12);
 }
 
 .actionIcon {
-    color: #0066cc;
+    color: #1565c0;
     margin-bottom: 16px;
 }
 
@@ -122,7 +126,7 @@ h2 {
     font-size: 1.1rem;
     font-weight: 600;
     margin-bottom: 8px;
-    color: #003366;
+    color: #0d477e;
 }
 
 .actionButton p {
@@ -158,7 +162,7 @@ h2 {
     display: flex;
     align-items: center;
     gap: 6px;
-    color: #0066cc;
+    color: #1565c0;
     text-decoration: none;
     font-weight: 600;
     font-size: 0.95rem;
@@ -166,7 +170,7 @@ h2 {
 }
 
 .viewAllLink:hover {
-    color: #004c99;
+    color: #0d477e;
 }
 
 .tableContainer {
@@ -213,6 +217,14 @@ h2 {
     background: #fafbfc;
 }
 
+.clickableRow {
+    cursor: pointer;
+}
+
+.clickableRow:hover td {
+    background: #eef4ff !important;
+}
+
 .nameCell {
     min-width: 260px;
 }
@@ -245,7 +257,7 @@ h2 {
 
 .name {
     font-weight: 600;
-    color: #003366;
+    color: #0d477e;
     margin-bottom: 2px;
 }
 
@@ -270,7 +282,7 @@ h2 {
 }
 
 .pinIcon {
-    color: #0066cc;
+    color: #1565c0;
     margin-right: 6px;
 }
 
@@ -289,7 +301,7 @@ h2 {
 }
 
 .clockIcon {
-    color: #0066cc;
+    color: #1565c0;
 }
 
 /* --- RESPONSIVIDADE --- */

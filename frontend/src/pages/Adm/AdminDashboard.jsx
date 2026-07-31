@@ -1,11 +1,31 @@
+import { useEffect, useState } from 'react';
 import { Users, PlusCircle, Search, Map, Clock, ArrowRight, MapPin } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import AdminSidebar from './AdminSidebar';
-import { getMemoriais } from '../../data/memoriaisStorage';
+import { fetchMemoriais, resolveImageUrl } from '../../lib/api';
 import styles from './AdminDashboard.module.css';
 
 export default function AdminDashboard() {
-    const memoriais = getMemoriais();
+    const navigate = useNavigate();
+    const [memoriais, setMemoriais] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        async function loadMemoriais() {
+            try {
+                const data = await fetchMemoriais();
+                setMemoriais(data);
+            } catch (error) {
+                console.error('Erro ao buscar memóriais no dashboard:', error);
+                setMemoriais([]);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+
+        loadMemoriais();
+    }, []);
+
     const ultimosCadastros = memoriais.slice(0, 3);
     const quadras = [...new Set(
         memoriais
@@ -32,6 +52,10 @@ export default function AdminDashboard() {
                         <h1 className={styles.title}>Olá, Administrador </h1>
                         <p className={styles.subtitle}>Bem-vindo ao sistema de gestão do Cemitério São Miguel.</p>
                     </header>
+
+                    {isLoading && (
+                        <div className={styles.emptyState}>Carregando registros...</div>
+                    )}
 
                     {/* --- CARDS DE RESUMO --- */}
                     <div className={styles.statsGrid}>
@@ -110,11 +134,16 @@ export default function AdminDashboard() {
                                     </thead>
                                     <tbody>
                                         {ultimosCadastros.map(memorial => (
-                                            <tr key={memorial.id}>
+                                            <tr
+                                                key={memorial.id}
+                                                className={styles.clickableRow}
+                                                onClick={() => navigate('/admin/memoriais', { state: { editMemorialId: memorial.id } })}
+                                                title="Clique para editar"
+                                            >
                                                 <td className={styles.nameCell}>
                                                     <div className={styles.nameContent}>
                                                     <div className={styles.avatar}>
-                                                        <img src={memorial.imagem} alt={memorial.nome} />
+                                                        <img src={resolveImageUrl(memorial.imagem)} alt={memorial.nome} />
                                                     </div>
                                                     <div className={styles.nameInfo}>
                                                         <span className={styles.name}>{memorial.nome}</span>

@@ -1,30 +1,86 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { ArrowRight, Lock, Mail, ShieldCheck } from 'lucide-react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { ArrowRight, Lock, Mail, ShieldAlert, ShieldCheck, X } from 'lucide-react';
+import { loginAdmin } from '../lib/api';
 import styles from './LoginPage.module.css';
 import logo from '../assets/logo.png';
 
 export default function LoginPage({ onLogin }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorModal, setErrorModal] = useState({ open: false, message: '' });
 
   function handleChange(event) {
     const { name, value } = event.target;
-    setFormData((current) => ({ ...current, [name]: value }));
+    const sanitizedValue = name === 'email' || name === 'password' ? value.replace(/\s+/g, '') : value;
+
+    setFormData((current) => ({ ...current, [name]: sanitizedValue }));
+
+    if (errorModal.open) {
+      setErrorModal({ open: false, message: '' });
+    }
   }
 
-  function handleSubmit(event) {
+  function handleKeyDown(event) {
+    const isRestrictedField = event.target.name === 'email' || event.target.name === 'password';
+
+    if (isRestrictedField && event.key === ' ') {
+      event.preventDefault();
+    }
+  }
+
+  function handlePaste(event) {
+    const isRestrictedField = event.target.name === 'email' || event.target.name === 'password';
+
+    if (!isRestrictedField) return;
+
     event.preventDefault();
+    const pastedText = (event.clipboardData || window.clipboardData).getData('text');
+    const cleanedText = pastedText.replace(/\s+/g, '');
+
+    if (!cleanedText) return;
+
+    const target = event.target;
+    const start = target.selectionStart ?? 0;
+    const end = target.selectionEnd ?? target.value.length;
+    const nextValue = `${target.value.slice(0, start)}${cleanedText}${target.value.slice(end)}`;
+    target.value = nextValue;
+
+    const syntheticEvent = {
+      target: { ...target, name: target.name, value: nextValue },
+      currentTarget: { ...target, name: target.name, value: nextValue },
+    };
+
+    handleChange(syntheticEvent);
+  }
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+
+    const email = formData.email.trim();
+    const password = formData.password.trim();
+
+    if (!email || !password) {
+      setErrorModal({ open: true, message: 'Informe e-mail e senha válidos para continuar.' });
+      return;
+    }
+
     setIsSubmitting(true);
 
-    window.setTimeout(() => {
+    try {
+      const response = await loginAdmin(email, password);
+      onLogin?.(response.token);
+      navigate(location.state?.from || '/admin');
+    } catch (error) {
+      setErrorModal({
+        open: true,
+        message: error.message || 'As credenciais informadas estão incorretas.',
+      });
+    } finally {
       setIsSubmitting(false);
-      onLogin?.();
-      navigate('/admin');
-    }, 600);
+    }
   }
 
   return (
@@ -58,6 +114,8 @@ export default function LoginPage({ onLogin }) {
                   placeholder="admin@memorial.com"
                   value={formData.email}
                   onChange={handleChange}
+                  onKeyDown={handleKeyDown}
+                  onPaste={handlePaste}
                   required
                 />
               </div>
@@ -77,6 +135,8 @@ export default function LoginPage({ onLogin }) {
                   placeholder="••••••••"
                   value={formData.password}
                   onChange={handleChange}
+                  onKeyDown={handleKeyDown}
+                  onPaste={handlePaste}
                   required
                 />
               </div>
@@ -104,6 +164,35 @@ export default function LoginPage({ onLogin }) {
         </div>
       </main>
 
+      {errorModal.open && (
+        <div className={styles.modalOverlay} role="presentation">
+          <div className={styles.modalCard} role="dialog" aria-modal="true" aria-labelledby="login-error-title">
+            <button
+              type="button"
+              className={styles.modalCloseButton}
+              onClick={() => setErrorModal({ open: false, message: '' })}
+              aria-label="Fechar modal de erro"
+            >
+              <X size={16} />
+            </button>
+
+            <div className={styles.modalIconWrap}>
+              <ShieldAlert size={28} className={styles.modalIcon} />
+            </div>
+
+            <h2 id="login-error-title">Credenciais inválidas</h2>
+            <p>{errorModal.message}</p>
+
+            <button
+              type="button"
+              className={styles.modalButton}
+              onClick={() => setErrorModal({ open: false, message: '' })}
+            >
+              Tentar novamente
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import {LayoutDashboard, Users, FileText, Settings, Home, ChevronRight, ChevronLeft} from 'lucide-react';
+import {LayoutDashboard, Users, Home, ChevronRight, ChevronLeft} from 'lucide-react';
 import styles from './AdminSidebar.module.css';
 
 export default function AdminSidebar() {
@@ -41,22 +41,6 @@ export default function AdminSidebar() {
                         className={({ isActive }) => isActive ? `${styles.navItem} ${styles.active}` : styles.navItem}
                     >
                         <Users size={20} /> Memoriais
-                    </NavLink>
-
-                    <NavLink 
-                        to="/admin/relatorios" 
-                        onClick={closeOnMobile}
-                        className={({ isActive }) => isActive ? `${styles.navItem} ${styles.active}` : styles.navItem}
-                    >
-                        <FileText size={20} /> Relatórios
-                    </NavLink>
-
-                    <NavLink 
-                        to="/admin/configuracoes" 
-                        onClick={closeOnMobile}
-                        className={({ isActive }) => isActive ? `${styles.navItem} ${styles.active}` : styles.navItem}
-                    >
-                        <Settings size={20} /> Configurações
                     </NavLink>
                 </nav>
                 

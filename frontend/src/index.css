@@ -1,49 +1,49 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
-  --warm-white: #FAFAF8;
-  --beige-50: #FDFCF9;
-  --beige-100: #F5F1E8;
-  --beige-200: #E8E0D0;
-  --beige-300: #D4C9B5;
-  --olive-600: #5C6B4A;
-  --olive-700:  #0f71e0;
-  --olive-800: #0f71e0;
-  --gray-50: #F8F8F7;
-  --gray-100: #F0F0EE;
-  --gray-200: #E4E4E1;
-  --gray-300: #D1D1CD;
-  --gray-400: #A8A8A3;
-  --gray-500: #7A7A75;
-  --gray-600: #5A5A56;
-  --gray-700: #3D3D3A;
-  --gray-800: #282826;
-  --gray-900: #1A1A18;
-  --gold-400: #C9A962;
-  --gold-500: #B8963D;
-  --gold-600: #9A7B2E;
+  --warm-white: #f8f9fb;
+  --beige-50: #f6f7fb;
+  --beige-100: #edf1f7;
+  --beige-200: #dde6f2;
+  --beige-300: #bfd0ea;
+  --olive-600: #3f5d7a;
+  --olive-700: #1c4d78;
+  --olive-800: #163a5a;
+  --gray-50: #f8f9fb;
+  --gray-100: #eef2f8;
+  --gray-200: #e2e8f0;
+  --gray-300: #cbd5e1;
+  --gray-400: #94a3b8;
+  --gray-500: #64748b;
+  --gray-600: #475569;
+  --gray-700: #334155;
+  --gray-800: #1e293b;
+  --gray-900: #0f172a;
+  --gold-400: #d8b56a;
+  --gold-500: #c59a48;
+  --gold-600: #a97d2f;
 
   --color-background: var(--warm-white);
   --color-text: var(--gray-800);
   --color-text-secondary: var(--gray-600);
   --color-text-muted: var(--gray-500);
   --color-border: var(--gray-200);
-  --color-primary: var(--olive-700);
-  --color-primary-hover: var(--olive-800);
+  --color-primary: #0f5bb1;
+  --color-primary-hover: #0b4d94;
   --color-accent: var(--gold-500);
 
   --font-serif: 'Cormorant Garamond', 'Georgia', serif;
-  --font-sans: 'Manrope', 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+  --font-sans: 'Inter', 'Segoe UI', 'Roboto', 'Arial', sans-serif;
 
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 16px;
   --radius-xl: 24px;
 
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06), 0 2px 4px rgba(0, 0, 0, 0.04);
-  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.04);
-  --shadow-xl: 0 24px 48px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.06);
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.08);
+  --shadow-md: 0 10px 28px rgba(15, 23, 42, 0.08), 0 4px 12px rgba(15, 23, 42, 0.04);
+  --shadow-lg: 0 18px 42px rgba(15, 23, 42, 0.12), 0 8px 18px rgba(15, 23, 42, 0.06);
+  --shadow-xl: 0 26px 56px rgba(15, 23, 42, 0.14), 0 10px 22px rgba(15, 23, 42, 0.08);
 
   --transition-fast: 150ms ease;
   --transition-normal: 250ms ease;
@@ -72,7 +72,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
   font-weight: 700;
   line-height: 1.2;
   color: var(--gray-900);

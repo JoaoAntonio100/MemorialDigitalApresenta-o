@@ -5,13 +5,13 @@
     display: flex;
     flex-direction: column;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-    font-family: 'Manrope', 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+    font-family: 'Inter', 'Segoe UI', 'Roboto', 'Arial', sans-serif;
 }
 
 
 /* BARRA PRINCIPAL */
 .mainBar {
-    background: linear-gradient(180deg, #0066cc 0%, #0059b3 100%);
+    background: #1565c0;
 }
 
 .container {
@@ -62,7 +62,7 @@
 
 .subtitle {
     font-size: 0.82rem;
-    color: #f7d36a;
+    color: #ffdea5;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.04em;
@@ -88,22 +88,23 @@
 }
 
 .navLink:hover {
-    background: #0066cc;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.14);
 }
 
 .navLinkActive {
-    background: rgba(255, 255, 255, 0.96);
-    color: #0057af;
-    box-shadow: inset 0 0 0 1px rgba(0, 102, 204, 0.06);
+    background: #ffdea5;
+    color: #002046;
+    box-shadow: none;
 }
 
 .navLinkActive:hover {
-    background: #f8f4f0;
+    background: #ffffff;
 }
 
 .mobileMenuBtn {
     display: none;
-    background: #ffffff;
+    background: #ffdea5;
     border-radius: 4px;
     padding: 4px;
     border: none;
@@ -131,14 +132,14 @@
         top: 115px;
         left: 0;
         right: 0;
-        background: #0066cc;
+        background: #1565c0;
         flex-direction: column;
         padding: 20px;
         transform: translateY(-10px);
         opacity: 0;
         visibility: hidden;
         transition: 0.3s;
-        border-bottom: 4px solid #004c99;
+        border-bottom: 4px solid #ffdea5;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
 

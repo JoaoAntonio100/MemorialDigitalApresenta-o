@@ -1,27 +1,47 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Plus, Edit, Trash2, Search, X, QrCode, ChevronLeft, ChevronRight, LayoutGrid, SquareChartGantt } from 'lucide-react';
 import QRCode from 'react-qr-code';
+import { useLocation } from 'react-router-dom';
 import {
-    getMemoriais, addMemorial, updateMemorial,
-    deleteMemorial as deleteMemorialStorage, getMemoriaisPorTumulo, getMemoriaisPorLote,
-    renameQuadra, deleteQuadra, renameLote, deleteLote
-} from '../../data/memoriaisStorage';
+    fetchMemoriais,
+    createMemorial,
+    updateMemorial as apiUpdateMemorial,
+    deleteMemorial as apiDeleteMemorial,
+    resolveImageUrl,
+} from '../../lib/api';
 import AdminSidebar from './AdminSidebar';
 import styles from './AdminMemoriais.module.css';
 
 const ITEMS_PER_PAGE = 10;
 
 export default function AdminMemoriais() {
-    const [memoriais, setMemoriais] = useState(getMemoriais);
+    const location = useLocation();
+    const editHandledRef = useRef(false);
+    const [memoriais, setMemoriais] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
+    const [isLoading, setIsLoading] = useState(true);
+    const [selectedImageFile, setSelectedImageFile] = useState(null);
+    const [selectedGalleryFiles, setSelectedGalleryFiles] = useState([]);
 
     const [selectedQuadra, setSelectedQuadra] = useState(null);
     const [selectedLote, setSelectedLote] = useState(null);
 
+    // quadras/lotes criados explicitamente persistem mesmo sem memoriais
+    const [quadrasRegistradas, setQuadrasRegistradas] = useState([]);
+    const [lotesRegistrados, setLotesRegistrados] = useState([]); // { quadra, lote }[]
+
     const [isFormModalOpen, setIsFormModalOpen] = useState(false);
     const [isQrModalOpen, setIsQrModalOpen] = useState(false);
     const [selectedMemorial, setSelectedMemorial] = useState(null);
+
+    // Modal de confirmação genérico
+    const [confirmModal, setConfirmModal] = useState({ open: false, title: '', message: '', onConfirm: null });
+
+    const openConfirm = (title, message, onConfirm) =>
+        setConfirmModal({ open: true, title, message, onConfirm });
+    const closeConfirm = () =>
+        setConfirmModal({ open: false, title: '', message: '', onConfirm: null });
 
     const [isQuadraModalOpen, setIsQuadraModalOpen] = useState(false);
     const [editingQuadra, setEditingQuadra] = useState(null);
@@ -37,28 +57,84 @@ export default function AdminMemoriais() {
         descricao: '', biografia: '', imagem: '', tipo: 'historica'
     });
 
+    const normalizeMemorialsFromApi = (items) => items.map((item) => ({
+        ...item,
+        localizacao: item.localizacao || `Quadra A, Lote 1`,
+        tipo: item.tipo || 'historica',
+        imagem: resolveImageUrl(item.imagem || item.galeria?.[0]) || 'https://placehold.co/400x400/png',
+        galeria: Array.isArray(item.galeria) ? item.galeria.filter(Boolean).map((src) => resolveImageUrl(src)) : [],
+        descricao: item.descricao || item.biografia || '',
+        dataNascimento: item.dataNascimento || '',
+        dataMorte: item.dataMorte || '',
+    }));
+
+    const getMemoriaisPorTumulo = (localizacao) =>
+        memoriais.filter((item) => item.localizacao === localizacao);
+
+    const getMemoriaisPorLote = (quadra, lote) =>
+        memoriais.filter((item) =>
+            item.localizacao === `Quadra ${quadra}, Lote ${lote}`
+        );
+
+    useEffect(() => {
+        async function loadMemoriais() {
+            try {
+                const data = await fetchMemoriais();
+                setMemoriais(normalizeMemorialsFromApi(data));
+            } catch (error) {
+                console.error('Erro ao buscar memoriais:', error);
+                setMemoriais([]);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+
+        loadMemoriais();
+    }, []);
+
+    // Abre edição vinda do dashboard apenas uma vez; ref impede re-disparo ao salvar memoriais
+    useEffect(() => {
+        if (editHandledRef.current) return;
+        const editId = location.state?.editMemorialId;
+        if (!editId || memoriais.length === 0) return;
+        const found = memoriais.find((m) => m.id === editId);
+        if (found) {
+            editHandledRef.current = true;
+            // Navega até o lote do memorial antes de abrir o modal
+            const quadraMatch = found.localizacao?.match(/^Quadra\s+(.+?),/);
+            const loteMatch   = found.localizacao?.match(/Lote\s+(.+?)$/);
+            if (quadraMatch) setSelectedQuadra(quadraMatch[1].trim());
+            if (loteMatch)   setSelectedLote(loteMatch[1].trim());
+            openEditModal(found);
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [location.state?.editMemorialId, memoriais.length]);
+
     // --- DADOS DERIVADOS ---
-    const quadras = [...new Set(
-        memoriais.map(m => {
+    const quadras = [...new Set([
+        ...quadrasRegistradas,
+        ...memoriais.map(m => {
             const match = m.localizacao?.match(/Quadra\s+(.+?)(?:,|$)/);
             return match ? match[1].trim() : null;
-        }).filter(Boolean)
-    )].sort();
+        }).filter(Boolean),
+    ])].sort();
 
     const quadrasComCount = quadras.map(q => ({
         nome: q,
-        count: memoriais.filter(m => m.localizacao?.includes(`Quadra ${q}`)).length
+        // startsWith garante que 'Quadra A' não bate 'Quadra AB'
+        count: memoriais.filter(m => m.localizacao?.startsWith(`Quadra ${q},`)).length
     }));
 
     const lotesDaQuadra = selectedQuadra
-        ? [...new Set(
-            memoriais
-                .filter(m => m.localizacao?.includes(`Quadra ${selectedQuadra}`))
+        ? [...new Set([
+            ...lotesRegistrados.filter(l => l.quadra === selectedQuadra).map(l => l.lote),
+            ...memoriais
+                .filter(m => m.localizacao?.startsWith(`Quadra ${selectedQuadra},`))
                 .map(m => {
                     const match = m.localizacao?.match(/Lote\s+(.+?)$/);
                     return match ? match[1].trim() : null;
-                }).filter(Boolean)
-        )].sort((a, b) => {
+                }).filter(Boolean),
+        ])].sort((a, b) => {
             const numA = parseInt(a) || 0;
             const numB = parseInt(b) || 0;
             return numA - numB;
@@ -67,17 +143,12 @@ export default function AdminMemoriais() {
 
     const lotesComCount = lotesDaQuadra.map(l => ({
         nome: l,
-        count: memoriais.filter(m =>
-            m.localizacao?.includes(`Quadra ${selectedQuadra}`) &&
-            m.localizacao?.includes(`Lote ${l}`)
-        ).length
+        // exact match evita que Lote 1 bata Lote 10, 11, etc.
+        count: memoriais.filter(m => m.localizacao === `Quadra ${selectedQuadra}, Lote ${l}`).length
     }));
 
     const memoriaisDoLote = (selectedQuadra && selectedLote)
-        ? memoriais.filter(m =>
-            m.localizacao?.includes(`Quadra ${selectedQuadra}`) &&
-            m.localizacao?.includes(`Lote ${selectedLote}`)
-        )
+        ? memoriais.filter(m => m.localizacao === `Quadra ${selectedQuadra}, Lote ${selectedLote}`)
         : [];
 
     const filteredMemoriais = memoriaisDoLote.filter(m =>
@@ -93,25 +164,64 @@ export default function AdminMemoriais() {
     // --- SALVAR MEMORIAL ---
     const saveMemorial = async (e) => {
         e.preventDefault();
+        const token = localStorage.getItem('memorialAdminToken') || '';
         const setor = (formData.setor || '').trim();
         const lote = (formData.lote || '').trim();
         const localizacao = `Quadra ${setor}, Lote ${lote}`;
-        const dadosParaSalvar = { ...formData, setor, lote, localizacao };
-        delete dadosParaSalvar.setor;
-        delete dadosParaSalvar.lote;
-        if (selectedMemorial) {
-            setMemoriais(updateMemorial(selectedMemorial.id, dadosParaSalvar));
-        } else {
-            setMemoriais(addMemorial(dadosParaSalvar));
+
+        try {
+            const form = new FormData();
+            form.append('nome', formData.nome);
+            form.append('biografia', formData.biografia || '');
+            form.append('descricao', formData.descricao || '');
+            form.append('dataNascimento', formData.dataNascimento || '');
+            form.append('dataMorte', formData.dataMorte || '');
+            form.append('localizacao', localizacao);
+            form.append('tipo', formData.tipo || 'historica');
+
+            if (selectedImageFile) {
+                form.append('imagem', selectedImageFile);
+            } else if (formData.imagem?.trim()) {
+                form.append('imagem', formData.imagem.trim());
+            }
+
+            if (selectedGalleryFiles.length > 0) {
+                selectedGalleryFiles.forEach((file) => {
+                    form.append('galeria', file);
+                });
+            }
+
+            if (selectedMemorial) {
+                const updated = await apiUpdateMemorial(selectedMemorial.id, form, token);
+                setMemoriais((current) => normalizeMemorialsFromApi(
+                    current.map((item) => item.id === updated.id ? { ...item, ...updated, localizacao } : item)
+                ));
+            } else {
+                const created = await createMemorial(form, token);
+                setMemoriais((current) => normalizeMemorialsFromApi([created, ...current]));
+            }
+
+            closeFormModal();
+        } catch (error) {
+            window.alert(error.message || 'Não foi possível salvar o memorial.');
         }
-        closeFormModal();
     };
 
     const deleteMemorial = async (id, nome) => {
-        if (window.confirm(`Tem certeza que deseja excluir o memorial de ${nome}?`)) {
-            setMemoriais(deleteMemorialStorage(id));
-            if (currentMemoriais.length === 1 && currentPage > 1) setCurrentPage(p => p - 1);
-        }
+        openConfirm(
+            'Excluir memorial',
+            `Tem certeza que deseja excluir o memorial de ${nome}? Esta ação não pode ser desfeita.`,
+            async () => {
+                try {
+                    const token = localStorage.getItem('memorialAdminToken') || '';
+                    await apiDeleteMemorial(id, token);
+                    setMemoriais((current) => current.filter((item) => item.id !== id));
+                    if (currentMemoriais.length === 1 && currentPage > 1) setCurrentPage(p => p - 1);
+                } catch (error) {
+                    window.alert(error.message || 'Não foi possível excluir o memorial.');
+                }
+            }
+        );
     };
 
     // --- FORMATAR DATA ---
@@ -132,13 +242,27 @@ export default function AdminMemoriais() {
 
     const handleImageUpload = (e) => {
         const file = e.target.files?.[0];
-        if (!file) return;
+        if (!file) {
+            setSelectedImageFile(null);
+            return;
+        }
 
+        setSelectedImageFile(file);
         const reader = new FileReader();
         reader.onloadend = () => {
             setFormData(prev => ({ ...prev, imagem: reader.result }));
         };
         reader.readAsDataURL(file);
+    };
+
+    const handleGalleryUpload = (e) => {
+        const files = Array.from(e.target.files || []);
+        if (!files.length) {
+            setSelectedGalleryFiles([]);
+            return;
+        }
+
+        setSelectedGalleryFiles(files);
     };
 
     // --- MODAL MEMORIAL ---
@@ -157,6 +281,8 @@ export default function AdminMemoriais() {
 
     const closeFormModal = () => {
         setSelectedMemorial(null);
+        setSelectedImageFile(null);
+        setSelectedGalleryFiles([]);
         setFormData({
             nome: '', dataNascimento: '', dataMorte: '',
             setor: selectedQuadra || '', lote: '',
@@ -176,25 +302,40 @@ export default function AdminMemoriais() {
         e.preventDefault();
         const nome = quadraNome.trim().toUpperCase();
         if (!nome) return;
+
         if (editingQuadra) {
-            setMemoriais(renameQuadra(editingQuadra, nome));
-        } else {
-            setMemoriais(addMemorial({
-                nome: 'Novo memorial', dataNascimento: '', dataMorte: '',
-                localizacao: `Quadra ${nome}, Lote 1`,
-                descricao: '', biografia: '', imagem: '', tipo: 'recente'
+            setMemoriais((current) => current.map((item) => {
+                if (!item.localizacao?.startsWith(`Quadra ${editingQuadra},`)) return item;
+                return {
+                    ...item,
+                    localizacao: item.localizacao.replace(`Quadra ${editingQuadra},`, `Quadra ${nome},`),
+                };
             }));
+            setQuadrasRegistradas(prev => prev.map(q => q === editingQuadra ? nome : q));
+            setLotesRegistrados(prev => prev.map(l => l.quadra === editingQuadra ? { ...l, quadra: nome } : l));
+        } else {
+            // Navega direto para a nova quadra; o admin adiciona lotes/memoriais a partir daqui
+            setQuadrasRegistradas(prev => [...new Set([...prev, nome])]);
+            setSelectedQuadra(nome);
+            setSelectedLote(null);
         }
+
         setIsQuadraModalOpen(false);
         setEditingQuadra(null);
         setQuadraNome('');
     };
 
     const handleDeleteQuadra = (nome) => {
-        if (window.confirm(`Excluir a Quadra ${nome} e TODOS os memoriais dentro dela?`)) {
-            setMemoriais(deleteQuadra(nome));
-            if (selectedQuadra === nome) { setSelectedQuadra(null); setSelectedLote(null); }
-        }
+        openConfirm(
+            `Excluir Quadra ${nome}`,
+            `Isso removerá a Quadra ${nome} e TODOS os memoriais dentro dela. Esta ação não pode ser desfeita.`,
+            () => {
+                setMemoriais((current) => current.filter((item) => !item.localizacao?.startsWith(`Quadra ${nome},`)));
+                setQuadrasRegistradas(prev => prev.filter(q => q !== nome));
+                setLotesRegistrados(prev => prev.filter(l => l.quadra !== nome));
+                if (selectedQuadra === nome) { setSelectedQuadra(null); setSelectedLote(null); }
+            }
+        );
     };
 
     // --- MODAL LOTE ---
@@ -208,25 +349,46 @@ export default function AdminMemoriais() {
         e.preventDefault();
         const nome = loteNome.trim();
         if (!nome) return;
+
         if (editingLote) {
-            setMemoriais(renameLote(selectedQuadra, editingLote, nome));
-        } else {
-            setMemoriais(addMemorial({
-                nome: 'Novo memorial', dataNascimento: '', dataMorte: '',
-                localizacao: `Quadra ${selectedQuadra}, Lote ${nome}`,
-                descricao: '', biografia: '', imagem: '', tipo: 'recente'
+            setMemoriais((current) => current.map((item) => {
+                if (item.localizacao !== `Quadra ${selectedQuadra}, Lote ${editingLote}`) return item;
+                return {
+                    ...item,
+                    localizacao: `Quadra ${selectedQuadra}, Lote ${nome}`,
+                };
             }));
+            setLotesRegistrados(prev => prev.map(l =>
+                l.quadra === selectedQuadra && l.lote === editingLote ? { ...l, lote: nome } : l
+            ));
+        } else {
+            // Navega para o novo lote; o admin clica em "Novo Memorial" para adicionar
+            setLotesRegistrados(prev => {
+                const jaExiste = prev.some(l => l.quadra === selectedQuadra && l.lote === nome);
+                return jaExiste ? prev : [...prev, { quadra: selectedQuadra, lote: nome }];
+            });
+            setSelectedLote(nome);
         }
+
         setIsLoteModalOpen(false);
         setEditingLote(null);
         setLoteNome('');
     };
 
     const handleDeleteLote = (lote) => {
-        if (window.confirm(`Excluir o Lote ${lote} da Quadra ${selectedQuadra} e TODOS os memoriais dentro dele?`)) {
-            setMemoriais(deleteLote(selectedQuadra, lote));
-            if (selectedLote === lote) setSelectedLote(null);
-        }
+        openConfirm(
+            `Excluir Lote ${lote}`,
+            `Isso removerá o Lote ${lote} da Quadra ${selectedQuadra} e TODOS os memoriais dentro dele. Esta ação não pode ser desfeita.`,
+            () => {
+                setMemoriais((current) => current.filter((item) =>
+                    item.localizacao !== `Quadra ${selectedQuadra}, Lote ${lote}`
+                ));
+                setLotesRegistrados(prev => prev.filter(l =>
+                    !(l.quadra === selectedQuadra && l.lote === lote)
+                ));
+                if (selectedLote === lote) setSelectedLote(null);
+            }
+        );
     };
 
     // --- QR CODE ---
@@ -534,6 +696,13 @@ export default function AdminMemoriais() {
                                     <label>URL da Imagem (opcional)</label>
                                     <input type="url" name="imagem" placeholder="https://..." value={formData.imagem} onChange={handleInputChange} />
                                 </div>
+                                <div className={styles.formGroup}>
+                                    <label>Fotos da Galeria (opcional)</label>
+                                    <input type="file" accept="image/*" multiple onChange={handleGalleryUpload} />
+                                    <small style={{ display: 'block', marginTop: '8px', color: '#666' }}>
+                                        Você pode enviar até 10 imagens para a galeria do memorial.
+                                    </small>
+                                </div>
                             </div>
                             <div className={styles.formCol}>
                                 <h3>Biografia e Textos</h3>
@@ -551,6 +720,28 @@ export default function AdminMemoriais() {
                                 <button type="submit" className={styles.saveBtn}>Salvar</button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            )}
+
+            {/* --- MODAL DE CONFIRMAÇÃO --- */}
+            {confirmModal.open && (
+                <div className={styles.modalOverlay} onClick={closeConfirm}>
+                    <div className={styles.confirmModal} onClick={(e) => e.stopPropagation()}>
+                        <div className={styles.confirmIcon}>
+                            <Trash2 size={28} color="#cc2200" />
+                        </div>
+                        <h2 className={styles.confirmTitle}>{confirmModal.title}</h2>
+                        <p className={styles.confirmMessage}>{confirmModal.message}</p>
+                        <div className={styles.confirmActions}>
+                            <button className={styles.cancelBtn} onClick={closeConfirm}>Cancelar</button>
+                            <button
+                                className={styles.deleteConfirmBtn}
+                                onClick={() => { confirmModal.onConfirm?.(); closeConfirm(); }}
+                            >
+                                Excluir
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}

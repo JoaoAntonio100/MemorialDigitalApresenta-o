@@ -1,5 +1,5 @@
 .page {
-  background: #f8f9fb;
+  background: #fbf9f8;
   padding-bottom: 40px;
 }
 
@@ -20,7 +20,7 @@
   gap: 8px;
   font-size: 0.95rem;
   font-weight: 600;
-  color: #004c99;
+  color: #775a19;
   text-decoration: none;
   background: none;
   border: none;
@@ -30,7 +30,7 @@
 }
 
 .backLink:hover {
-  color: #0066cc;
+  color: #002046;
   transform: translateX(-4px);
 }
 
@@ -47,8 +47,8 @@
   position: relative;
   overflow: hidden;
   border-radius: 20px;
-  border: 1px solid #e8edf3;
-  box-shadow: 0 10px 35px rgba(0, 0, 0, .07);
+  border: 1px solid rgba(196, 198, 207, 0.45);
+  box-shadow: 0 20px 56px rgba(0, 32, 70, .1);
 }
 
 /* Cabeçalho do Perfil */
@@ -85,7 +85,7 @@
   font-family: 'Inter', 'Segoe UI', 'Roboto', 'Arial', sans-serif;
   font-size: 2.25rem;
   font-weight: 800;
-  color: #002244;
+  color: #002046;
   margin-bottom: 10px;
   line-height: 1.1;
   letter-spacing: -0.02em;
@@ -151,21 +151,21 @@
   align-items: center;
   justify-content: center;
   gap: 6px; 
-  background: #f8fafe; 
-  color: #004c99; 
+  background: #fffaf0;
+  color: #775a19;
   padding: 8px 16px; 
   border-radius: 100px; 
   font-size: 0.85rem; 
   font-weight: 600;
-  border: 1px solid #cce0ff;
+  border: 1px solid #ffdea5;
   transition: all 0.2s ease;
   height: 38px; 
   white-space: nowrap;
 }
 
 .locationBadge:hover {
-  background: #e6f0ff;
-  border-color: #99c2ff;
+  background: #ffefd2;
+  border-color: #cba052;
 }
 
 .shortBio {
@@ -182,7 +182,7 @@
   display: flex;
   justify-content: center;
   padding: 0;
-  background: #f8f8f8;
+  background: #f6f3f2;
   border-top: 1px solid #e6e6e6;
   border-bottom: 1px solid  #e6e6e6;
   margin: 0 48px;
@@ -213,7 +213,7 @@
 }
 
 .tabBtn:hover {
-  color: #002244;
+  color: #002046;
 }
 
 .tabBtn::after {
@@ -228,14 +228,14 @@
 }
 
 .tabActive {
-  color: #002244;
+  color: #002046;
   font-weight: 700;
   background: transparent;
   box-shadow: none;
 }
 
 .tabActive::after {
-  background-color: #cba052;
+  background-color: #775a19;
 }
 
 /* --- Conteúdo das Abas --- */
@@ -349,6 +349,20 @@
 
 .galleryThumb:hover .thumbOverlay {
   opacity: 1;
+}
+
+.emptyGallery {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  border: 1px dashed #d8e1ea;
+  border-radius: 16px;
+  background: linear-gradient(180deg, #f9fbfd 0%, #f3f7fb 100%);
+  color: #53657a;
+  font-weight: 600;
+  text-align: center;
+  padding: 32px 20px;
 }
 
 /* --- Lightbox  --- */

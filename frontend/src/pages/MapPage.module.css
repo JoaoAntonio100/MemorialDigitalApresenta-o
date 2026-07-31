@@ -1,6 +1,7 @@
 .page {
     min-height: 100vh;
-    background: #f4f7f9; /* Fundo oficial */
+    background: #fbf9f8;
+    font-family: 'Inter', 'Segoe UI', 'Roboto', 'Arial', sans-serif;
 }
 
 .container {
@@ -11,23 +12,52 @@
 
 /* --- Cabeçalho Institucional Azul --- */
 .heroBanner {
-    background: linear-gradient(to right, #004c97, #006ad4);
-    padding: 60px 24px; 
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background:
+        radial-gradient(ellipse 52% 95% at 4% 0%, rgba(255, 255, 255, 0.14), transparent 68%),
+        radial-gradient(ellipse 48% 78% at 96% 100%, rgba(7, 70, 144, 0.2), transparent 72%),
+        #1565c0;
+    padding: 72px 24px 64px;
     text-align: center; 
+}
+
+.heroBanner::before {
+    content: '';
+    position: absolute;
+    z-index: 0;
+    width: min(55vw, 700px);
+    height: min(55vw, 700px);
+    right: -18%;
+    top: -60%;
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    border-radius: 46% 54% 62% 38% / 42% 40% 60% 58%;
+    background: rgba(255, 255, 255, 0.045);
+    transform: rotate(-22deg);
+}
+
+.heroBanner .container {
+    position: relative;
+    z-index: 1;
 }
 
 .heroBanner h1 {
     font-family: 'Inter', 'Segoe UI', 'Roboto', 'Arial', sans-serif;
-    font-size: 3rem;
+    font-size: clamp(2.35rem, 4vw, 3.35rem);
     color: #ffffff;
     margin-bottom: 12px;
-    font-weight: 800;
+    font-weight: 750;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
 }
 
 .heroBanner p {
-    font-size: 1.15rem;
-    color: rgba(255, 255, 255, 0.85);
-    line-height: 1.6;
+    max-width: 640px;
+    margin: 0 auto;
+    font-size: 1.08rem;
+    color: rgba(255, 255, 255, 0.88);
+    line-height: 1.7;
 
 }
 
@@ -47,8 +77,8 @@
 .mapWrapper {
     position: relative;
     border-radius: 16px;
-    box-shadow: 0 16px 48px rgba(0, 34, 68, 0.08);
-    border: 6px solid #ffffff; 
+    box-shadow: 0 24px 64px rgba(0, 32, 70, 0.12);
+    border: 2px solid #ffdea5;
     background: #ffffff;
 }
 
@@ -129,10 +159,10 @@
 }
 
 .sectorActive {
-    background: #0066cc; 
+    background: #1565c0;
     border-color: #ffffff;
     transform: translate(-50%, -50%) scale(1.2);
-    box-shadow: 0 8px 24px rgba(0, 102, 204, 0.4);
+    box-shadow: 0 8px 24px rgba(0, 32, 70, 0.4);
     z-index: 20;
 }
 
@@ -194,8 +224,8 @@
     background: #ffffff;
     border-radius: 16px;
     padding: 40px 32px;
-    box-shadow: 0 16px 48px rgba(0, 34, 68, 0.05);
-    border: 1px solid #eaeaea;
+    box-shadow: 0 16px 48px rgba(0, 32, 70, 0.08);
+    border: 1px solid rgba(196, 198, 207, 0.35);
 }
 
 .defaultInfo {
@@ -203,7 +233,7 @@
 }
 
 .defaultIcon {
-    color: #004c99;
+    color: #775a19;
     margin-bottom: 20px;
     opacity: 0.8;
 }
@@ -260,12 +290,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #e6f0ff;
+    background: rgba(255, 222, 165, 0.25);
     border-radius: 12px;
 }
 
 .sectorIcon {
-    color: #0066cc;
+    color: #775a19;
 }
 
 .sectorHeader h3 {
@@ -351,7 +381,7 @@
     }
 
     .heroBanner h1 {
-        font-size: 2.2rem;
+        font-size: 2.3rem;
     }
 
     .map {

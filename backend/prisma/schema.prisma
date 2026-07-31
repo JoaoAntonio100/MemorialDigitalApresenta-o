@@ -1,13 +1,21 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
+}
+
+model Memorial {
+  id             Int      @id @default(autoincrement())
+  nome           String
+  biografia      String?
+  descricao      String?
+  dataNascimento String?
+  dataMorte      String?
+  localizacao    String?
+  tipo           String?  @default("historica")
+  imagem         String?
+  galeria        String[] @default([])
+  createdAt      DateTime @default(now())
 }

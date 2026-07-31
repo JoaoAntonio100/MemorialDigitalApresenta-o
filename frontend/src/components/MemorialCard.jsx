@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { MapPin, Clock } from 'lucide-react';
+import { resolveImageUrl } from '../lib/api';
 import styles from './MemorialCard.module.css';
 
 export default function MemorialCard({
@@ -15,7 +16,7 @@ export default function MemorialCard({
     >
       <div className={styles.imageWrapper}>
         <img
-          src={memorial.imagem}
+          src={resolveImageUrl(memorial.imagem)}
           alt={memorial.nome}
           className={styles.image}
         />

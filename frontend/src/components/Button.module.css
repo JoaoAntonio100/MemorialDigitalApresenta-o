@@ -38,14 +38,14 @@
 
 /* Variants */
 .primary {
-  background: var(--olive-700);
+  background: #1565c0;
   color: white;
-  border: 1px solid var(--olive-700);
+  border: 1px solid #1565c0;
 }
 
 .primary:hover {
-  background: var(--olive-800);
-  border-color: var(--olive-800);
+  background: #0d477e;
+  border-color: #0d477e;
 }
 
 .secondary {

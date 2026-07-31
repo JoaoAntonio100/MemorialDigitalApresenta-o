@@ -1,25 +1,53 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ChevronLeft, MapPin, X, Map, Quote, Star } from 'lucide-react';
-import { getMemorialById } from '../data/memoriaisStorage';
+import { fetchMemorialById, resolveImageUrl } from '../lib/api';
 import styles from './MemorialPage.module.css';
 import Button from '../components/Button';
-
-const galleryImages = [
-  { src: "https://images.pexels.com/photos/2259917/pexels-photo-2259917.jpeg?auto=compress&cs=tinysrgb&w=800", caption: "Foto histórica" },
-  { src: "https://images.pexels.com/photos/2387873/pexels-photo-2387873.jpeg?auto=compress&cs=tinysrgb&w=800", caption: "Jardim da Família" },
-  { src: "https://images.pexels.com/photos/2214376/pexels-photo-2214376.jpeg?auto=compress&cs=tinysrgb&w=800", caption: "Retrato oficial" },
-  { src: "https://images.pexels.com/photos/262367/pexels-photo-262367.jpeg?auto=compress&cs=tinysrgb&w=800", caption: "Vista do memorial" },
-  { src: "https://images.pexels.com/photos/534259/pexels-photo-534259.jpeg?auto=compress&cs=tinysrgb&w=800", caption: "Jardins" },
-  { src: "https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg?auto=compress&cs=tinysrgb&w=800", caption: "Homenagem" },
-];
 
 export default function MemorialPage() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const memorial = getMemorialById(id);
+  const [memorial, setMemorial] = useState(null);
   const [activeTab, setActiveTab] = useState('bio');
   const [lightboxIndex, setLightboxIndex] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadMemorial() {
+      try {
+        const data = await fetchMemorialById(id);
+        setMemorial(data);
+      } catch (error) {
+        console.error('Erro ao carregar memorial:', error);
+        setMemorial(null);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadMemorial();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className={styles.page}>
+        <div className={styles.container}>
+          <div className={styles.topNav}>
+            <button onClick={() => navigate(-1)} className={styles.backLink}>
+              <ChevronLeft size={20} />
+              Voltar
+            </button>
+          </div>
+          <section className={styles.mainSection}>
+            <div className={styles.profileCard} style={{ padding: '48px', textAlign: 'center' }}>
+              <h2>Carregando memorial...</h2>
+            </div>
+          </section>
+        </div>
+      </div>
+    );
+  }
 
   if (!memorial) {
     return (
@@ -42,6 +70,12 @@ export default function MemorialPage() {
     );
   }
 
+  const galleryImages = Array.isArray(memorial.galeria) && memorial.galeria.length > 0
+    ? memorial.galeria.map((src, index) => ({ src: resolveImageUrl(src), caption: `Foto ${index + 1}` }))
+    : memorial.imagem
+      ? [{ src: resolveImageUrl(memorial.imagem), caption: memorial.nome }]
+      : [];
+
   return (
     <div className={styles.page}>
 
@@ -61,7 +95,7 @@ export default function MemorialPage() {
             {/* Cabeçalho do Perfil */}
             <div className={styles.profileHeader}>
               <div className={styles.photoWrapper}>
-                <img src={memorial.imagem} alt={memorial.nome} className={styles.photo} />
+                <img src={resolveImageUrl(memorial.imagem)} alt={memorial.nome} className={styles.photo} />
               </div>
 
               <div className={styles.infoWrapper}>
@@ -134,20 +168,26 @@ export default function MemorialPage() {
               )}
 
               {activeTab === 'gallery' && (
-                <div className={styles.galleryGrid}>
-                  {galleryImages.map((img, i) => (
-                    <button
-                      key={i}
-                      className={styles.galleryThumb}
-                      onClick={() => setLightboxIndex(i)}
-                    >
-                      <img src={img.src} alt={img.caption} />
-                      <div className={styles.thumbOverlay}>
-                        <span>{img.caption}</span>
-                      </div>
-                    </button>
-                  ))}
-                </div>
+                galleryImages.length > 0 ? (
+                  <div className={styles.galleryGrid}>
+                    {galleryImages.map((img, i) => (
+                      <button
+                        key={i}
+                        className={styles.galleryThumb}
+                        onClick={() => setLightboxIndex(i)}
+                      >
+                        <img src={img.src} alt={img.caption} />
+                        <div className={styles.thumbOverlay}>
+                          <span>{img.caption}</span>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <div className={styles.emptyGallery}>
+                    Nenhuma foto adicionada a esta galeria ainda.
+                  </div>
+                )
               )}
             </div>
 
@@ -156,7 +196,7 @@ export default function MemorialPage() {
       </div>
 
       {/* Lightbox para fotos em tela cheia */}
-      {lightboxIndex !== null && (
+      {lightboxIndex !== null && galleryImages.length > 0 && (
         <div className={styles.lightbox} onClick={() => setLightboxIndex(null)}>
           <button className={styles.lightboxClose} onClick={() => setLightboxIndex(null)}>
             <X size={24} />

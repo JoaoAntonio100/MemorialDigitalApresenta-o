@@ -1,7 +1,7 @@
 .adminLayout {
     display: flex;
     min-height: 100vh;
-    background: #f4f7f9;
+    background: #f4f8fd;
 }
 
 /* --- Barra Lateral --- */
@@ -106,7 +106,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    background: #0066cc;
+    background: #1565c0;
     color: white;
     border: none;
     padding: 12px 24px;
@@ -118,7 +118,7 @@
 }
 
 .addButton:hover {
-    background: #004c99;
+    background: #0d477e;
 }
 
 .headerActions {
@@ -295,8 +295,11 @@
 }
 
 .modalHeader h2 {
-    font-size: 1.25rem;
+    font-size: 1.15rem;
+    font-weight: 600;
+    font-family: 'Inter', 'Segoe UI', 'Roboto', sans-serif;
     color: #003366;
+    letter-spacing: -0.01em;
 }
 
 .closeBtn {
@@ -376,7 +379,7 @@
 
 .saveBtn {
     padding: 12px 24px;
-    background: #0066cc;
+    background: #1565c0;
     border: none;
     border-radius: 8px;
     color: #ffffff;
@@ -385,7 +388,7 @@
 }
 
 .saveBtn:hover {
-    background: #004c99;
+    background: #0d477e;
 }
 
 .nameCell div {
@@ -435,6 +438,75 @@
     box-shadow: 0 24px 48px rgba(0, 0, 0, 0.2);
 }
 
+.confirmModal {
+    background: #ffffff;
+    width: 100%;
+    max-width: 420px;
+    border-radius: 16px;
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.25);
+    padding: 36px 32px 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+}
+
+.confirmIcon {
+    width: 56px;
+    height: 56px;
+    background: #fff0ee;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4px;
+}
+
+.confirmTitle {
+    font-size: 1.2rem;
+    font-weight: 600;
+    font-family: 'Inter', 'Segoe UI', 'Roboto', sans-serif;
+    color: #1a1a2e;
+    margin: 0;
+    letter-spacing: -0.01em;
+}
+
+.confirmMessage {
+    font-size: 0.95rem;
+    color: #666;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.confirmActions {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+    width: 100%;
+}
+
+.confirmActions .cancelBtn {
+    flex: 1;
+}
+
+.deleteConfirmBtn {
+    flex: 1;
+    padding: 12px 24px;
+    background: #cc2200;
+    border: none;
+    border-radius: 8px;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.deleteConfirmBtn:hover {
+    background: #a81b00;
+}
+
 .formGrid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -443,8 +515,12 @@
 }
 
 .formCol h3 {
-    font-size: 1.1rem;
-    color: #003366;
+    font-size: 0.8rem;
+    font-weight: 700;
+    font-family: 'Inter', 'Segoe UI', 'Roboto', sans-serif;
+    color: #0066cc;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
     margin-bottom: 20px;
     padding-bottom: 8px;
     border-bottom: 1px solid #eaeaea;
@@ -551,14 +627,14 @@
 }
 
 .pageBtnActive {
-    background: #0066cc;
-    border-color: #0066cc;
+    background: #1565c0;
+    border-color: #1565c0;
     color: #ffffff;
 }
 
 .pageBtnActive:hover:not(:disabled) {
-    background: #004c99;
-    border-color: #004c99;
+    background: #0d477e;
+    border-color: #0d477e;
     color: #ffffff;
 }
 
@@ -656,13 +732,17 @@
 }
 
 .setorInfo h3 {
-    font-size: 1.1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: 'Inter', 'Segoe UI', 'Roboto', sans-serif;
     color: #003366;
     margin-bottom: 4px;
+    letter-spacing: -0.01em;
 }
 
 .setorInfo p {
-    font-size: 0.85rem;
+    font-size: 0.82rem;
+    font-family: 'Inter', 'Segoe UI', 'Roboto', sans-serif;
     color: #888;
     margin: 0;
 }

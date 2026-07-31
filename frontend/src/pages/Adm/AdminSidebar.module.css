@@ -1,6 +1,6 @@
 .sidebar {
     width: 260px;
-    background: #002244;
+    background: #1565c0;
     color: #ffffff;
     display: flex;
     flex-direction: column;
@@ -69,7 +69,7 @@
 }
 
 .navItem.active {
-    background: #0066cc;
+    background: rgba(255, 255, 255, 0.2);
     color: #ffffff;
 }
 
@@ -98,8 +98,8 @@
         transform: translateY(-50%);
         width: 30px;
         height: 50px; 
-        background: #00224473;
-        color:  #002244;
+        background: rgba(21, 101, 192, 0.78);
+        color: #ffffff;
         border: none;
         border-radius: 0 50px 50px 0;
         cursor: pointer;
