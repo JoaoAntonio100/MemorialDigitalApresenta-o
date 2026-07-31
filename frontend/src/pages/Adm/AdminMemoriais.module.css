@@ -1,0 +1,824 @@
+.adminLayout {
+    display: flex;
+    min-height: 100vh;
+    background: #f4f7f9;
+}
+
+/* --- Barra Lateral --- */
+.sidebar {
+    width: 260px;
+    background: #002244;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+}
+
+.sidebarHeader {
+    padding: 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebarHeader h2 {
+    font-size: 1.25rem;
+    font-family: 'Inter', 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+    color: #ffffff;
+}
+
+.sidebarNav {
+    padding: 24px 16px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sidebarFooter {
+    padding: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.navItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 16px;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.7);
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+}
+
+.navItem:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+}
+
+.navItem.active {
+    background: #0066cc;
+    color: #ffffff;
+}
+
+/* --- Conteúdo Principal --- */
+.mainContent {
+    flex: 1;
+    padding: 40px 0;
+    overflow-x: hidden;
+    min-width: 0;
+    width: 100%;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 32px;
+}
+
+/* --- Cabeçalho --- */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 32px;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.title {
+    font-size: 2rem;
+    color: #003366;
+    margin-bottom: 4px;
+    font-family: 'Inter', 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+}
+
+.subtitle {
+    color: #666666;
+    font-size: 1rem;
+}
+
+.addButton {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #0066cc;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.addButton:hover {
+    background: #004c99;
+}
+
+.headerActions {
+    display: flex;
+    gap: 8px;
+}
+
+/* --- Estrutura da Tabela --- */
+.card {
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #eaeaea;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.toolbar {
+    padding: 20px 24px;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.searchBox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f8f9fa;
+    border: 1px solid #eaeaea;
+    padding: 10px 16px;
+    border-radius: 8px;
+    max-width: 320px;
+}
+
+.searchBox input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 0.95rem;
+    width: 100%;
+}
+
+.tableContainer {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    display: block;
+}
+
+.table {
+    width: 100%;
+    min-width: 760px;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.table th {
+    background: #f8f9fa;
+    padding: 16px 24px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    color: #555555;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.table td {
+    padding: 16px 24px;
+    border-bottom: 1px solid #eaeaea;
+    color: #444444;
+}
+
+.nameCell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 220px;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #eeeeee;
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.name {
+    font-weight: 600;
+    color: #003366;
+}
+
+
+.locationContent {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.pinIcon {
+    color: #0066cc;
+    margin-right: 6px;
+}
+
+.actionsColumn,
+.actionsCell {
+    width: 1%;
+    white-space: nowrap;
+}
+
+.iconBtn {
+    background: none;
+    border: none;
+    color: #777777;
+    padding: 8px;
+    margin-left: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.iconBtn:hover {
+    background: #f0f4f8;
+    color: #0066cc;
+}
+
+.deleteBtn:hover {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.emptyState {
+    text-align: center;
+    padding: 48px 24px !important;
+    color: #888888;
+}
+
+/* --- Modal & Formulário --- */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+}
+
+.modalContent {
+    background: #ffffff;
+    width: 100%;
+    max-width: 500px;
+    border-radius: 16px;
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+.modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.modalHeader h2 {
+    font-size: 1.25rem;
+    color: #003366;
+}
+
+.closeBtn {
+    background: none;
+    border: none;
+    color: #999999;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.closeBtn:hover {
+    color: #333333;
+}
+
+.form {
+    padding: 24px;
+}
+
+.formRow {
+    display: flex;
+    gap: 16px;
+}
+
+.formRow .formGroup {
+    flex: 1;
+}
+
+.formGroup {
+    margin-bottom: 20px;
+}
+
+.formGroup label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #444444;
+    margin-bottom: 8px;
+}
+
+.formGroup input,
+.formGroup textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.2s;
+}
+
+.formGroup input:focus,
+.formGroup textarea:focus {
+    outline: none;
+    border-color: #0066cc;
+}
+
+.modalActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 32px;
+}
+
+.cancelBtn {
+    padding: 12px 24px;
+    background: transparent;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    color: #555555;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.cancelBtn:hover {
+    background: #f8f9fa;
+}
+
+.saveBtn {
+    padding: 12px 24px;
+    background: #0066cc;
+    border: none;
+    border-radius: 8px;
+    color: #ffffff;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.saveBtn:hover {
+    background: #004c99;
+}
+
+.nameCell div {
+    display: flex;
+    flex-direction: column;
+}
+
+.dateCell {
+    font-size: 0.8rem;
+    color: #888;
+    font-weight: normal;
+}
+
+.badge {
+    padding: 6px 12px;
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.badgeHist {
+    background: #e0f2fe;
+    color: #026ec7;
+}
+
+.badgeRec {
+    background: #f3f4f6;
+    color: #4b5563;
+}
+
+
+.modalContentLarge {
+    background: #ffffff;
+    width: 100%;
+    max-width: 900px;
+    border-radius: 16px;
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+    max-height: 90vh;
+}
+
+.modalContentSmall {
+    background: #ffffff;
+    width: 100%;
+    max-width: 400px;
+    border-radius: 16px;
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.2);
+}
+
+.formGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    padding: 24px;
+}
+
+.formCol h3 {
+    font-size: 1.1rem;
+    color: #003366;
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.formGroup select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: white;
+}
+
+.modalActionsFull {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 16px;
+    border-top: 1px solid #eaeaea;
+}
+
+/* --- QR Code Modal --- */
+.qrContainer {
+    padding: 32px 24px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.qrContainer p {
+    color: #555;
+    margin-bottom: 24px;
+}
+
+.qrCodeBox {
+    padding: 16px;
+    background: white;
+    border: 2px solid #eaeaea;
+    border-radius: 12px;
+    display: inline-block;
+    margin-bottom: 16px;
+}
+
+.qrLinkUrl {
+    font-size: 0.8rem !important;
+    color: #888 !important;
+    word-break: break-all;
+    margin-bottom: 24px !important;
+}
+
+/* --- ESTILOS DA PAGINAÇÃO --- */
+.paginationContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    border-top: 1px solid #eaeaea;
+    background: #ffffff;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.paginationInfo {
+    font-size: 0.9rem;
+    color: #666666;
+    margin: 0;
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.pageBtn {
+    min-width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #555555;
+    background: #ffffff;
+    border: 1px solid #eaeaea;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.pageBtn:hover:not(:disabled) {
+    border-color: #0066cc;
+    color: #0066cc;
+    background: #f8fafe;
+}
+
+.pageBtn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background: #fcfcfc;
+}
+
+.pageBtnActive {
+    background: #0066cc;
+    border-color: #0066cc;
+    color: #ffffff;
+}
+
+.pageBtnActive:hover:not(:disabled) {
+    background: #004c99;
+    border-color: #004c99;
+    color: #ffffff;
+}
+
+/* --- Botão Voltar --- */
+.backBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    color: #0066cc;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+    margin-bottom: 8px;
+    transition: color 0.2s;
+}
+
+.backBtn:hover {
+    color: #004c99;
+}
+
+/* --- Grid de Quadras/Lotes --- */
+.setoresGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+}
+
+.setorCard {
+    background: #ffffff;
+    border: 1px solid #eaeaea;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.setorCard:hover {
+    border-color: #b0d0f0;
+    box-shadow: 0 4px 16px rgba(0, 102, 204, 0.08);
+}
+
+.setorCardBtn {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    padding: 20px 20px 16px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+}
+
+.setorCardBtn:hover {
+    background: #f8fbff;
+}
+
+.cardActions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+    padding: 8px 12px;
+    border-top: 1px solid #f4f6f8;
+}
+
+.cardActions .iconBtn {
+    padding: 7px;
+    margin-left: 0;
+    border-radius: 8px;
+}
+
+.cardActions .iconBtn:hover {
+    background: #f0f4f8;
+}
+
+.cardActions .deleteBtn:hover {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.setorIcon {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    background: #f0f7ff;
+    color: #0066cc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.setorInfo h3 {
+    font-size: 1.1rem;
+    color: #003366;
+    margin-bottom: 4px;
+}
+
+.setorInfo p {
+    font-size: 0.85rem;
+    color: #888;
+    margin: 0;
+}
+
+/* --- Responsividade da Sidebar --- */
+@media (max-width: 768px) {
+    .adminLayout {
+        flex-direction: column;
+        width: 100%;
+        max-width: 100vw;
+        overflow-x: hidden;
+    }
+
+    .container {
+        padding: 32px 16px;
+        width: 100%;
+        max-width: 100vw;
+        box-sizing: border-box;
+    }
+
+    .sidebar {
+        width: 100%;
+        flex-direction: row;
+        overflow-x: auto;
+    }
+
+    .sidebarHeader,
+    .sidebarFooter {
+        display: none;
+    }
+
+    .sidebarNav {
+        flex-direction: row;
+        padding: 12px;
+    }
+
+    .navItem {
+        white-space: nowrap;
+        width: auto;
+    }
+
+    .container {
+        padding: 0 16px;
+    }
+
+    .modalContent {
+        max-width: 90%;
+        margin: 20px;
+    }
+
+    .formRow {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .formGrid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .paginationContainer {
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .table {
+        min-width: 650px;
+    }
+
+    .table th,
+    .table td {
+        padding: 12px;
+        font-size: .85rem;
+    }
+
+    .nameCell {
+        min-width: 180px;
+        gap: 8px;
+    }
+
+    .avatar {
+        width: 34px;
+        height: 34px;
+    }
+
+    .actionsCell {
+        white-space: nowrap;
+    }
+
+    .iconBtn {
+        padding: 6px;
+        margin-left: 2px;
+    }
+
+    .pinIcon {
+        width: 0;
+        margin: 0;
+        display: none;
+    }
+
+    .locationCell {
+        gap: 0;
+    }
+
+    .setoresGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .setorCardBtn {
+        padding: 16px;
+    }
+
+    .cardActions {
+        justify-content: center;
+    }
+
+}
+
+/* --- CONFIGURAÇÕES PARA A IMPRESSORA --- */
+@media print {
+    /* 1. Esconde a Sidebar (pela tag) e o Conteúdo Principal */
+    aside,
+    .mainContent,
+    .closeBtn,
+    .saveBtn {
+        display: none !important;
+    }
+
+    /* 2. Tira o layout Flexbox que estava empurrando para a direita */
+    .adminLayout {
+        display: block !important;
+        background: white !important;
+    }
+
+    /* 3. Transforma o fundo transparente do modal em uma folha branca limpa */
+    .modalOverlay {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        background: white !important;
+        backdrop-filter: none !important;
+        display: flex !important;
+        align-items: flex-start !important;
+        justify-content: center !important;
+        padding-top: 40px !important;
+        margin: 0 !important;
+    }
+
+    /* 4. Estilo de placa profissional para o QR Code */
+    .modalContentSmall {
+        box-shadow: none !important;
+        border: 2px solid #003366 !important;
+        padding: 40px !important;
+        margin: 0 !important;
+    }
+}

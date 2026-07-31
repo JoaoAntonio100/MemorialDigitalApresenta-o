@@ -1,0 +1,544 @@
+.page {
+  background: #f8f9fb;
+  padding-bottom: 40px;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* --- Navegação Topo --- */
+.topNav {
+  padding: 30px 0 20px;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #004c99;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s ease;
+}
+
+.backLink:hover {
+  color: #0066cc;
+  transform: translateX(-4px);
+}
+
+/* --- Card Principal --- */
+.mainSection {
+  position: relative;
+  z-index: 10;
+  margin-bottom: 80px;
+}
+
+
+.profileCard {
+  background: #ffffff;
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  border: 1px solid #e8edf3;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, .07);
+}
+
+/* Cabeçalho do Perfil */
+.profileHeader {
+  display: flex;
+  gap: 48px;
+  padding: 56px 48px 48px;
+  align-items: center;
+}
+
+.photoWrapper {
+  flex-shrink: 0;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  box-shadow: 0 12px 32px rgba(0, 34, 68, 0.08);
+  background: #f4f7f9;
+  overflow: hidden;
+  border: 6px solid #ffffff;
+}
+
+.photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.infoWrapper {
+  flex: 1;
+}
+
+.name {
+  font-family: 'Inter', 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #002244;
+  margin-bottom: 10px;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+/* --- Datas e Localização --- */
+.metadata {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+  align-items: center;
+}
+
+/* Container das datas */
+.dateWrapper {
+  display: flex;
+  align-items: center;
+  color: #555555;
+  font-size: 1.05rem;
+  font-weight: 500;
+}
+
+.dateBlock {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.starIcon {
+  color: #d4a017;
+  fill: #d4a017;
+  margin-top: -2px;
+}
+
+.crossIcon {
+  font-size: 1.2rem;
+  color: #777777;
+  margin-bottom: 2px;
+  position: relative;
+  font-weight: 800;
+}
+
+/* Linha divisória entre as datas */
+.dateDivider {
+  width: 1px;
+  height: 16px;
+  background-color: #d0d7de;
+  margin: 0 16px;
+}
+
+/* --- Botões de Ação  --- */
+.actionButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px; 
+  align-items: center; 
+  width: 100%;
+}
+
+.locationBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px; 
+  background: #f8fafe; 
+  color: #004c99; 
+  padding: 8px 16px; 
+  border-radius: 100px; 
+  font-size: 0.85rem; 
+  font-weight: 600;
+  border: 1px solid #cce0ff;
+  transition: all 0.2s ease;
+  height: 38px; 
+  white-space: nowrap;
+}
+
+.locationBadge:hover {
+  background: #e6f0ff;
+  border-color: #99c2ff;
+}
+
+.shortBio {
+  font-size: 1rem;
+  color: #6b7280;
+  margin-top: -6px;
+  margin-bottom: 18px;
+  font-weight: 500;
+}
+
+
+/* --- Abas de Navegação --- */
+.tabNavWrapper {
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  background: #f8f8f8;
+  border-top: 1px solid #e6e6e6;
+  border-bottom: 1px solid  #e6e6e6;
+  margin: 0 48px;
+  margin: 32px 0 0 0;
+}
+
+.tabNav {
+  display: flex;
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  gap: 40px;
+}
+
+.tabBtn {
+  padding: 20px 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #9e9e9e;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.tabBtn:hover {
+  color: #002244;
+}
+
+.tabBtn::after {
+  content: '';
+  position: absolute;
+  bottom: 0px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: transparent;
+  transition: background-color 0.3s ease;
+}
+
+.tabActive {
+  color: #002244;
+  font-weight: 700;
+  background: transparent;
+  box-shadow: none;
+}
+
+.tabActive::after {
+  background-color: #cba052;
+}
+
+/* --- Conteúdo das Abas --- */
+.tabContent {
+  padding: 56px 48px;
+  min-height: 300px;
+}
+
+.bioText {
+  font-size: 1.1rem;
+  color: #444444;
+  text-align: justify;
+  white-space: pre-wrap;
+  margin: 0 auto;
+  max-width:860px;
+  line-height:1.9;
+}
+
+/* Citação / Homenagem  */
+.tributeBox {
+  font-size: 1.1rem;
+  margin-top: 56px;
+  background: #fcfcfd;
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  position: relative;
+  overflow: hidden;
+  border-left: 2px solid #d9a441;
+  border-radius: 12px;
+  padding: 36px;
+}
+
+.tributeIcon {
+  color: #0066cc;
+  flex-shrink: 0;
+  opacity: 0.15;
+  transform: rotate(180deg);
+}
+
+.tributeContent {
+  position: relative;
+  z-index: 2;
+}
+
+.tributeBox p {
+  font-family: 'Inter', 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+  font-style: italic;
+  font-size: 1.2rem;
+  color: #003366;
+  line-height: 1.7;
+  margin: 0 0 16px 0;
+}
+
+.tributeAuthor {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #0066cc;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* --- Galeria --- */
+.galleryGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.galleryThumb {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+  background: #f0f0f0;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.galleryThumb:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.15);
+}
+
+.galleryThumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.galleryThumb:hover img {
+  transform: scale(1.08);
+}
+
+.thumbOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(0, 34, 68, 0.85) 100%);
+  display: flex;
+  align-items: flex-end;
+  padding: 20px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  color: white;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.galleryThumb:hover .thumbOverlay {
+  opacity: 1;
+}
+
+/* --- Lightbox  --- */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 20, 40, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* --- Botão Fechar da Galeria --- */
+.lightboxClose {
+  position: fixed;
+  /* Prende o botão na tela */
+  top: 24px;
+  right: 24px;
+  color: #111111;
+  background: #ffffff;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  z-index: 10000;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.lightboxClose:hover {
+  background: #f0f0f0;
+  transform: scale(1.1);
+}
+
+/* Setas de navegação lateral */
+.lightboxNav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: white;
+  font-size: 3rem;
+  line-height: 1;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border: none;
+  z-index: 10000;
+  transition: background 0.2s;
+  cursor: pointer;
+}
+
+.lightboxNav:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.lightboxPrev {
+  left: 24px;
+}
+
+.lightboxNext {
+  right: 24px;
+}
+
+.lightboxInner {
+  max-width: 85vw;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: default;
+  z-index: 10000;
+}
+
+.lightboxInner img {
+  max-width: 100%;
+  max-height: 75vh;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.lightboxInner p {
+  margin-top: 16px;
+  color: white;
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+.lightboxInner span {
+  margin-top: 8px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+}
+
+/* --- Responsividade --- */
+@media (max-width: 900px) {
+  .profileHeader {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 48px 24px;
+    gap: 32px;
+  }
+
+  .metadata {
+    justify-content: center;
+  }
+
+  .actionButtons {
+    justify-content: center;
+  }
+
+  .galleryGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .profileCard {
+    border-radius: 12px;
+  }
+  .name {
+  font-size: 2rem;
+}
+
+  .locationBadge {
+    padding: 10px 10px;
+    font-size: 0.95rem;
+  }
+
+  .tabNav {
+    width: 100%;
+    flex-direction: column;
+    border-radius: 12px;
+  }
+
+  .tabNavWrapper {
+    margin: 32px 0 0 0;
+  }
+
+  .lightboxClose {
+    top: 16px;
+    right: 16px;
+    width: 44px;
+    height: 44px;
+  }
+
+  .tabNav {
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+    gap: 24px;
+  }
+
+  .tabBtn {
+    width: auto;
+    padding: 16px 0;
+    font-size: 0.8rem;
+  }
+
+  .tabContent {
+    padding: 32px 20px;
+  }
+
+  .tributeBox {
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+    margin-top: 20px;
+  }
+
+  .galleryGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .lightboxNav {
+    font-size: 2rem;
+    padding: 16px;
+  }
+
+  .lightboxPrev {
+    left: 10px;
+  }
+
+  .lightboxNext {
+    right: 10px;
+  }
+}

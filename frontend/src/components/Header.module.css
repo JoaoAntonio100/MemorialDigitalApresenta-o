@@ -1,0 +1,281 @@
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    font-family: 'Manrope', 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+}
+
+
+/* BARRA PRINCIPAL */
+.mainBar {
+    background: linear-gradient(180deg, #0066cc 0%, #0059b3 100%);
+}
+
+.container {
+    max-width: 1280px;
+    margin: auto;
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 24px;
+}
+
+/* LOGO */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    text-decoration: none;
+}
+
+.logoIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logoImage {
+    max-height: 50px;
+    width: auto;
+    object-fit: contain;
+}
+
+.logoText {
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid rgba(255, 255, 255, 0.28);
+    padding-left: 14px;
+}
+
+.title {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+}
+
+.subtitle {
+    font-size: 0.82rem;
+    color: #f7d36a;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+/* NAVEGAÇÃO */
+.nav {
+    display: flex;
+    gap: 8px;
+}
+
+.navLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    padding: 10px 16px;
+    border-radius: 20px;
+    color: #ffffffd5;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: 0.2s;
+}
+
+.navLink:hover {
+    background: #0066cc;
+}
+
+.navLinkActive {
+    background: rgba(255, 255, 255, 0.96);
+    color: #0057af;
+    box-shadow: inset 0 0 0 1px rgba(0, 102, 204, 0.06);
+}
+
+.navLinkActive:hover {
+    background: #f8f4f0;
+}
+
+.mobileMenuBtn {
+    display: none;
+    background: #ffffff;
+    border-radius: 4px;
+    padding: 4px;
+    border: none;
+    cursor: pointer;
+}
+
+/* RESPONSIVO */
+@media(max-width: 992px) {
+    .accLinks {
+        display: none;
+    }
+
+    .accContainer {
+        justify-content: flex-end;
+    }
+}
+
+@media(max-width: 768px) {
+    .mobileMenuBtn {
+        display: block;
+    }
+
+    .nav {
+        position: absolute;
+        top: 115px;
+        left: 0;
+        right: 0;
+        background: #0066cc;
+        flex-direction: column;
+        padding: 20px;
+        transform: translateY(-10px);
+        opacity: 0;
+        visibility: hidden;
+        transition: 0.3s;
+        border-bottom: 4px solid #004c99;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .navOpen {
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+    }
+
+    .navLink {
+        width: 100%;
+        text-align: center;
+        padding: 14px;
+    }
+
+    .subtitle {
+        display: none;
+    }
+
+    .logoImg {
+        max-width: 120px;
+    }
+
+    .sistemaDigitalText {
+        font-size: 0.9rem;
+        line-height: 1.1;
+    }
+
+    .headerDivider {
+        margin: 0 10px;
+    }
+}
+
+@media (max-width: 1100px) {
+    .nav {
+        gap: 20px;
+    }
+
+    .nav a {
+        font-size: 0.95rem;
+    }
+
+    .logo {
+        transform: scale(0.9);
+        transform-origin: left center;
+    }
+
+    .active {
+        padding: 14px 22px;
+    }
+
+    .navLink {
+        padding: 10px 10px;
+    }
+
+}
+
+@media (max-width: 480px) {
+
+    .sistemaDigitalText,
+    .headerDivider {
+        display: none;
+    }
+}
+
+.modalOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1100;
+    padding: 20px;
+}
+
+.confirmModal {
+    background: #faf9f4;
+    border: 1px solid rgba(80, 95, 118, 0.16);
+    border-radius: 20px;
+    padding: 28px;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 20px 50px rgba(27, 54, 93, 0.15);
+    text-align: center;
+}
+
+.confirmModal h3 {
+    margin: 0 0 10px;
+    color: #002046;
+    font-size: 1.25rem;
+    font-weight: 800;
+}
+
+.confirmModal p {
+    margin: 0 0 22px;
+    color: #505f76;
+    font-size: 0.98rem;
+}
+
+.confirmActions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.cancelButton,
+.confirmButton {
+    border: none;
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.cancelButton:hover,
+.confirmButton:hover {
+    transform: translateY(-1px);
+}
+
+.cancelButton {
+    background: transparent;
+    color: #505f76;
+    border: 1px solid rgba(80, 95, 118, 0.2);
+}
+
+.confirmButton {
+    background: #002046;
+    color: #ffffff;
+}
+
+.logoutButton {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+}
+
