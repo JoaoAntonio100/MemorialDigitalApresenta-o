@@ -1,8 +1,40 @@
-node_modules
-# Keep environment variables out of version control
-.env
+# Dependências e build
+/node_modules/
+/dist/
+/build/
+/coverage/
 
-/generated/prisma
+# Variáveis de ambiente
+/.env
+/.env.*
+!/.env.example
 
-# Arquivos enviados pelos usuários são armazenados fora do Git
+# Banco local e arquivos gerados pelo Prisma
+/prisma/*.db
+/prisma/*.sqlite
+/prisma/*.sqlite3
+/.prisma/
+/generated/
+
+# Dados gerados em execução
 /uploads/
+/logs/
+/*.log
+/*.pid
+/*.pid.lock
+/.cache/
+/.tmp/
+/.temp/
+
+# Configurações locais de ferramentas
+/.agents/
+/.claude/
+/.windsurf/
+/history/
+/.history/
+
+# Editor e sistema operacional
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

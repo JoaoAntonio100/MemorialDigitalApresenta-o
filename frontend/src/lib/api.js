@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 export function resolveImageUrl(value) {
   if (!value) return '';
@@ -52,22 +52,34 @@ async function request(path, options = {}) {
 }
 
 export async function fetchMemoriais() {
-  return request('/memoriais');
+  const data = await request('/api/memoriais');
+
+  console.log('=== RESPOSTA DA API ===');
+  console.log(data);
+  console.log('É array?', Array.isArray(data));
+
+  if (Array.isArray(data)) return data;
+  if (Array.isArray(data?.memoriais)) return data.memoriais;
+  if (Array.isArray(data?.data)) return data.data;
+
+  console.warn('Formato inesperado:', data);
+
+  return [];
 }
 
 export async function fetchMemorialById(id) {
-  return request(`/memoriais/${id}`);
+  return request(`/api/memoriais/${id}`);
 }
 
 export async function loginAdmin(email, password) {
-  return request('/login', {
+  return request('/api/login', {
     method: 'POST',
     body: { email, password },
   });
 }
 
 export async function createMemorial(payload, token) {
-  return request('/memoriais', {
+  return request('/api/memoriais', {
     method: 'POST',
     body: payload,
     authToken: token,
@@ -75,7 +87,7 @@ export async function createMemorial(payload, token) {
 }
 
 export async function updateMemorial(id, payload, token) {
-  return request(`/memoriais/${id}`, {
+  return request(`/api/memoriais/${id}`, {
     method: 'PUT',
     body: payload,
     authToken: token,
@@ -83,7 +95,7 @@ export async function updateMemorial(id, payload, token) {
 }
 
 export async function deleteMemorial(id, token) {
-  return request(`/memoriais/${id}`, {
+  return request(`/api/memoriais/${id}`, {
     method: 'DELETE',
     authToken: token,
   });

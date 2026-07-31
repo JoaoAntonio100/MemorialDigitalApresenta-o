@@ -5,7 +5,7 @@ import { PrismaClient } from "@prisma/client";
 const connectionString = process.env.DATABASE_URL;
 
 if (!connectionString) {
-  throw new Error("A variável DATABASE_URL não foi encontrada no arquivo .env");
+  throw new Error("A variável de ambiente DATABASE_URL não foi configurada.");
 }
 
 const adapter = new PrismaPg({

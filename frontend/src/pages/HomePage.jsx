@@ -44,7 +44,7 @@ export default function HomePage() {
     if (!query) return [];
 
     return memorials
-      .filter((memorial) => memorial.nome.toLowerCase().includes(query))
+      .filter((memorial) => typeof memorial.nome === 'string' && memorial.nome.toLowerCase().includes(query))
       .slice(0, 5);
   }, [memorials, searchQuery]);
 

@@ -152,7 +152,7 @@ export default function AdminMemoriais() {
         : [];
 
     const filteredMemoriais = memoriaisDoLote.filter(m =>
-        m.nome.toLowerCase().includes(searchTerm.toLowerCase())
+        typeof m.nome === 'string' && m.nome.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     useEffect(() => { setCurrentPage(1); }, [searchTerm]);
@@ -191,13 +191,26 @@ export default function AdminMemoriais() {
                 });
             }
 
+            const payload = selectedImageFile || selectedGalleryFiles.length > 0
+                ? form
+                : {
+                    nome: formData.nome,
+                    biografia: formData.biografia || '',
+                    descricao: formData.descricao || '',
+                    dataNascimento: formData.dataNascimento || '',
+                    dataMorte: formData.dataMorte || '',
+                    localizacao,
+                    tipo: formData.tipo || 'historica',
+                    imagem: formData.imagem?.trim() || '',
+                };
+
             if (selectedMemorial) {
-                const updated = await apiUpdateMemorial(selectedMemorial.id, form, token);
+                const updated = await apiUpdateMemorial(selectedMemorial.id, payload, token);
                 setMemoriais((current) => normalizeMemorialsFromApi(
                     current.map((item) => item.id === updated.id ? { ...item, ...updated, localizacao } : item)
                 ));
             } else {
-                const created = await createMemorial(form, token);
+                const created = await createMemorial(payload, token);
                 setMemoriais((current) => normalizeMemorialsFromApi([created, ...current]));
             }
 

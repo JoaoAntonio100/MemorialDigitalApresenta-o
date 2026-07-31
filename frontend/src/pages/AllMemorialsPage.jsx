@@ -70,7 +70,7 @@ export default function MemorialsPage() {
             try {
                 const data = await fetchMemoriais();
                 if (isMounted) {
-                    setMemoriais(data);
+                    setMemoriais(Array.isArray(data) ? data : []);
                 }
             } catch (error) {
                 console.error('Erro ao carregar memoriais:', error);
@@ -91,7 +91,7 @@ export default function MemorialsPage() {
         };
     }, []);
 
-    const todosMemoriais = memoriais;
+    const todosMemoriais = Array.isArray(memoriais) ? memoriais : [];
     const personalidadesImportantes = todosMemoriais.filter(m => m.tipo === 'historica');
     const memoriaisRecentes = todosMemoriais.filter(m => m.tipo === 'recente');
 
@@ -109,7 +109,7 @@ export default function MemorialsPage() {
         if (!query) return list;
 
         return list.filter(memorial =>
-            memorial.nome.toLowerCase().includes(query)
+            typeof memorial.nome === 'string' && memorial.nome.toLowerCase().includes(query)
         );
     }, [searchQuery, activeFilter, personalidadesImportantes, memoriaisRecentes, todosMemoriais]);
 

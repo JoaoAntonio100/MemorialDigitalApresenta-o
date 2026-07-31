@@ -33,9 +33,13 @@ const upload = multer({
   },
 });
 
-const JWT_SECRET = process.env.JWT_SECRET || "memorial-secret";
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "admin@memorial.com";
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "123456";
+const JWT_SECRET = process.env.JWT_SECRET;
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+
+if (!JWT_SECRET || !ADMIN_EMAIL || !ADMIN_PASSWORD) {
+  throw new Error("JWT_SECRET, ADMIN_EMAIL e ADMIN_PASSWORD devem ser configurados.");
+}
 
 const authenticateAdmin = (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -67,7 +71,7 @@ app.get("/", (req, res) => {
   });
 });
 
-app.post("/login", (req, res) => {
+app.post("/api/login", (req, res) => {
   const { email, password } = req.body;
 
   if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
@@ -89,7 +93,7 @@ app.post("/login", (req, res) => {
   });
 });
 
-app.get("/teste-banco", async (req, res) => {
+app.get("/api/teste-banco", async (req, res) => {
   try {
     const quantidade = await prisma.memorial.count();
 
@@ -107,7 +111,7 @@ app.get("/teste-banco", async (req, res) => {
   }
 });
 
-app.get("/memoriais", async (req, res) => {
+app.get("/api/memoriais", async (req, res) => {
   try {
     const memoriais = await prisma.memorial.findMany({
       orderBy: {
@@ -122,7 +126,7 @@ app.get("/memoriais", async (req, res) => {
   }
 });
 
-app.get("/memoriais/:id", async (req, res) => {
+app.get("/api/memoriais/:id", async (req, res) => {
   try {
     const id = Number(req.params.id);
 
@@ -145,7 +149,7 @@ app.get("/memoriais/:id", async (req, res) => {
   }
 });
 
-app.post("/memoriais", authenticateAdmin, upload.fields([
+app.post("/api/memoriais", authenticateAdmin, upload.fields([
   { name: "imagem", maxCount: 1 },
   { name: "galeria", maxCount: 10 },
 ]), async (req, res) => {
@@ -182,7 +186,7 @@ app.post("/memoriais", authenticateAdmin, upload.fields([
   }
 });
 
-app.put("/memoriais/:id", authenticateAdmin, upload.fields([
+app.put("/api/memoriais/:id", authenticateAdmin, upload.fields([
   { name: "imagem", maxCount: 1 },
   { name: "galeria", maxCount: 10 },
 ]), async (req, res) => {
@@ -231,7 +235,7 @@ app.put("/memoriais/:id", authenticateAdmin, upload.fields([
   }
 });
 
-app.delete("/memoriais/:id", authenticateAdmin, async (req, res) => {
+app.delete("/api/memoriais/:id", authenticateAdmin, async (req, res) => {
   try {
     const id = Number(req.params.id);
 
