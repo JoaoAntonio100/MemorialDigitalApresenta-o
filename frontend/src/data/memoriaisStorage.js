@@ -1,3 +1,4 @@
+import placeholder from '../assets/person-placeholder.svg';
 import { todosMemoriais } from './sampleData';
 
 const STORAGE_KEY = 'memorial_digital_data';
@@ -37,6 +38,10 @@ function normalizeLocalizacao(loc) {
     return loc.replace(/\s+/g, ' ').trim();
 }
 
+function normalizeMemorialImagem(imagem) {
+    return placeholder;
+}
+
 export function getMemoriais() {
     const stored = loadFromStorage();
     if (stored) {
@@ -46,13 +51,21 @@ export function getMemoriais() {
                 loc = loc.replace(/Setor/g, 'Quadra');
             }
             loc = normalizeLocalizacao(loc);
-            return loc !== m.localizacao ? { ...m, localizacao: loc } : m;
+            return {
+                ...m,
+                localizacao: loc !== m.localizacao ? loc : m.localizacao,
+                imagem: normalizeMemorialImagem(m.imagem)
+            };
         });
         if (JSON.stringify(migrado) !== JSON.stringify(stored)) saveToStorage(migrado);
         return migrado;
     }
-    saveToStorage(todosMemoriais);
-    return todosMemoriais;
+    const normalized = todosMemoriais.map(m => ({
+        ...m,
+        imagem: normalizeMemorialImagem(m.imagem)
+    }));
+    saveToStorage(normalized);
+    return normalized;
 }
 
 export function addMemorial(memorial) {
