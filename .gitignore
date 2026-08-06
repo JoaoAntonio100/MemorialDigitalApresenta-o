@@ -1,43 +1,22 @@
-# Este repositório publica somente o backend.
-/frontend/
-
 # Arquivos gerados na raiz
 /node_modules/
 /dist/
+/build/
+/coverage/
 /.history/
 
-# Dependências e build
-/backend/node_modules/
-/backend/dist/
-/backend/build/
-/backend/coverage/
+# Variáveis de ambiente
+.env
+.env.*
+!.env.example
 
-# Variáveis de ambiente e dados locais
-/backend/.env
-/backend/.env.*
-!/backend/.env.example
-/backend/prisma/*.db
-/backend/prisma/*.sqlite
-/backend/prisma/*.sqlite3
-/backend/uploads/
-
-# Arquivos gerados, logs e temporários
-/backend/.prisma/
-/backend/generated/
-/backend/logs/
-/backend/*.log
-/backend/*.pid
-/backend/*.pid.lock
-/backend/.cache/
-/backend/.tmp/
-/backend/.temp/
-
-# Configurações locais de ferramentas
-/backend/.agents/
-/backend/.claude/
-/backend/.windsurf/
-/backend/history/
-/backend/.history/
+# Logs e temporários
+*.log
+*.pid
+*.pid.lock
+.cache/
+.tmp/
+.temp/
 
 # Editor e sistema operacional
 .vscode/

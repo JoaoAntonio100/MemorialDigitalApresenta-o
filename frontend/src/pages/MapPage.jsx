@@ -33,6 +33,14 @@ export default function MapPage() {
             {/* Conteúdo Principal */}
             <main className={styles.main}>
                 <div className={styles.container}>
+                    <div className={styles.developmentNotice} role="status">
+                        <Info size={22} aria-hidden="true" />
+                        <div>
+                            <strong>Mapa em desenvolvimento</strong>
+                            <span>Os recursos de localização, zoom, camadas e rotas ainda estão sendo preparados.</span>
+                        </div>
+                    </div>
+
                     <div className={styles.layout}>
                         
                         {/* Área do Mapa */}

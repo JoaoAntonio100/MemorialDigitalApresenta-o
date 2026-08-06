@@ -5,6 +5,7 @@ import multer from "multer";
 import path from "path";
 import fs from "fs";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 import { fileURLToPath } from "url";
 
 import prisma from "./lib/prisma.js";
@@ -35,10 +36,17 @@ const upload = multer({
 
 const JWT_SECRET = process.env.JWT_SECRET;
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+const ADMIN_PASSWORD_HASH = process.env.ADMIN_PASSWORD_HASH;
+const allowedOrigins = (process.env.CORS_ORIGINS || "http://localhost:5173")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+const loginAttempts = new Map();
+const LOGIN_WINDOW_MS = 15 * 60 * 1000;
+const MAX_LOGIN_ATTEMPTS = 5;
 
-if (!JWT_SECRET || !ADMIN_EMAIL || !ADMIN_PASSWORD) {
-  throw new Error("JWT_SECRET, ADMIN_EMAIL e ADMIN_PASSWORD devem ser configurados.");
+if (!JWT_SECRET || !ADMIN_EMAIL || !ADMIN_PASSWORD_HASH) {
+  throw new Error("JWT_SECRET, ADMIN_EMAIL e ADMIN_PASSWORD_HASH devem ser configurados.");
 }
 
 const authenticateAdmin = (req, res, next) => {
@@ -52,6 +60,11 @@ const authenticateAdmin = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
+
+    if (decoded.role !== "admin") {
+      return res.status(403).json({ erro: "Acesso não autorizado." });
+    }
+
     req.admin = decoded;
     return next();
   } catch (error) {
@@ -61,7 +74,18 @@ const authenticateAdmin = (req, res, next) => {
 
 const app = express();
 
-app.use(cors());
+// The deployed API is behind Render's reverse proxy, so req.ip uses the client address.
+app.set("trust proxy", 1);
+app.use(cors({
+  origin(origin, callback) {
+    // Requests without Origin are non-browser clients, such as health checks.
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(null, false);
+  },
+}));
 app.use(express.json());
 app.use("/uploads", express.static(uploadDir));
 
@@ -71,10 +95,27 @@ app.get("/", (req, res) => {
   });
 });
 
-app.post("/api/login", (req, res) => {
+app.post("/api/login", async (req, res) => {
   const { email, password } = req.body;
+  const ip = req.ip;
+  const now = Date.now();
+  const attempts = loginAttempts.get(ip);
 
-  if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+  if (attempts && now - attempts.firstAttempt < LOGIN_WINDOW_MS) {
+    if (attempts.count >= MAX_LOGIN_ATTEMPTS) {
+      const retryAfter = Math.ceil((LOGIN_WINDOW_MS - (now - attempts.firstAttempt)) / 1000);
+      res.set("Retry-After", String(retryAfter));
+      return res.status(429).json({ message: "Muitas tentativas. Tente novamente mais tarde." });
+    }
+  } else if (attempts) {
+    loginAttempts.delete(ip);
+  }
+
+  const passwordMatches = typeof password === "string"
+    && await bcrypt.compare(password, ADMIN_PASSWORD_HASH);
+
+  if (email === ADMIN_EMAIL && passwordMatches) {
+    loginAttempts.delete(ip);
     const token = jwt.sign(
       { email, role: "admin" },
       JWT_SECRET,
@@ -86,6 +127,12 @@ app.post("/api/login", (req, res) => {
       token,
     });
   }
+
+  const currentAttempts = loginAttempts.get(ip);
+  loginAttempts.set(ip, {
+    count: (currentAttempts?.count || 0) + 1,
+    firstAttempt: currentAttempts?.firstAttempt || now,
+  });
 
   return res.status(401).json({
     success: false,

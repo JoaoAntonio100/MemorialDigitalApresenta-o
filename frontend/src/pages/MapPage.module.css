@@ -66,6 +66,36 @@
     padding: 48px 0 80px;
 }
 
+.developmentNotice {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 28px;
+    padding: 18px 20px;
+    border: 1px solid #e5c46e;
+    border-radius: 12px;
+    background: #fff8df;
+    color: #5b4714;
+}
+
+.developmentNotice svg {
+    flex: 0 0 auto;
+    margin-top: 2px;
+}
+
+.developmentNotice strong,
+.developmentNotice span {
+    display: block;
+}
+
+.developmentNotice strong {
+    margin-bottom: 3px;
+}
+
+.developmentNotice span {
+    line-height: 1.45;
+}
+
 .layout {
     display: grid;
     grid-template-columns: 1fr 380px; 

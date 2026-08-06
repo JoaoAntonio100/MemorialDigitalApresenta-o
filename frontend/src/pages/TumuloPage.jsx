@@ -1,16 +1,73 @@
+import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { MapPin, Quote, Star, User } from 'lucide-react';
-import { getMemoriaisPorTumulo } from '../data/memoriaisStorage';
+import { fetchMemoriais, resolveImageUrl } from '../lib/api';
 import styles from './TumuloPage.module.css';
+
+function getLocalizacaoPart(localizacao, label) {
+  const pattern = label === 'Quadra'
+    ? /(?:^|,\s*)Quadra\s+(.+?)(?:,\s*Lote\s+|$)/i
+    : /(?:^|,\s*)Lote\s+(.+?)$/i;
+  const match = localizacao?.match(pattern);
+  return match ? match[1].trim().toLowerCase() : null;
+}
+
+function isInLocalizacao(memorial, localizacao) {
+  const targetQuadra = getLocalizacaoPart(localizacao, 'Quadra');
+  const targetLote = getLocalizacaoPart(localizacao, 'Lote');
+  const memorialQuadra = getLocalizacaoPart(memorial.localizacao, 'Quadra');
+  const memorialLote = getLocalizacaoPart(memorial.localizacao, 'Lote');
+
+  if (targetQuadra && targetLote) {
+    return memorialQuadra === targetQuadra && memorialLote === targetLote;
+  }
+
+  if (targetQuadra) {
+    return memorialQuadra === targetQuadra;
+  }
+
+  return memorial.localizacao?.trim().toLowerCase() === localizacao.trim().toLowerCase();
+}
 
 export default function TumuloPage() {
   const { localizacao } = useParams();
+  const [pessoas, setPessoas] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const decoded = (() => {
     try { return decodeURIComponent(localizacao || ''); }
     catch { return localizacao || ''; }
   })();
 
-  const pessoas = getMemoriaisPorTumulo(decoded);
+  useEffect(() => {
+    async function loadMemoriais() {
+      setIsLoading(true);
+      try {
+        const memoriais = await fetchMemoriais();
+        setPessoas(memoriais.filter((memorial) => isInLocalizacao(memorial, decoded)));
+      } catch (error) {
+        console.error('Erro ao carregar memoriais do tumulo:', error);
+        setPessoas([]);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    loadMemoriais();
+  }, [decoded]);
+
+  if (isLoading) {
+    return (
+      <div className={styles.page}>
+        <div className={styles.container}>
+          <section className={styles.mainSection}>
+            <div className={styles.card} style={{ padding: '48px', textAlign: 'center' }}>
+              <h2>Carregando memorial...</h2>
+            </div>
+          </section>
+        </div>
+      </div>
+    );
+  }
 
   if (pessoas.length === 0) {
     return (
@@ -53,7 +110,7 @@ export default function TumuloPage() {
             >
               <div className={styles.personImage}>
                 {pessoa.imagem ? (
-                  <img src={pessoa.imagem} alt={pessoa.nome} />
+                  <img src={resolveImageUrl(pessoa.imagem)} alt={pessoa.nome} />
                 ) : (
                   <User size={40} className={styles.userIcon} />
                 )}

@@ -2,6 +2,7 @@
 /node_modules/
 /dist/
 /build/
+.vite/
 /coverage/
 
 # Variáveis de ambiente
@@ -9,29 +10,18 @@
 .env.*
 !.env.example
 
-# Banco local e arquivos gerados pelo Prisma
-/prisma/*.db
-/prisma/*.sqlite
-/prisma/*.sqlite3
-.prisma/
-generated/
-
-# Dados gerados em execução
-/uploads/
-/logs/
+# Logs, temporários e histórico local
 *.log
-*.pid
-*.pid.lock
 .cache/
 .tmp/
 .temp/
+history/
+.history/
 
 # Configurações locais de ferramentas
 .agents/
 .claude/
 .windsurf/
-history/
-.history/
 
 # Editor e sistema operacional
 .vscode/

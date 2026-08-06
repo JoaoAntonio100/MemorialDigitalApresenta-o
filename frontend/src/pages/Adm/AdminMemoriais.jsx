@@ -68,9 +68,6 @@ export default function AdminMemoriais() {
         dataMorte: item.dataMorte || '',
     }));
 
-    const getMemoriaisPorTumulo = (localizacao) =>
-        memoriais.filter((item) => item.localizacao === localizacao);
-
     const getMemoriaisPorLote = (quadra, lote) =>
         memoriais.filter((item) =>
             item.localizacao === `Quadra ${quadra}, Lote ${lote}`
@@ -404,14 +401,12 @@ export default function AdminMemoriais() {
         );
     };
 
-    // --- QR CODE ---
-    const [tumuloPeople, setTumuloPeople] = useState([]);
+    // --- QR CODE DO FALECIDO ---
     const openQrModal = (memorial) => {
         setSelectedMemorial(memorial);
-        setTumuloPeople(getMemoriaisPorTumulo(memorial.localizacao));
         setIsQrModalOpen(true);
     };
-    const qrCodeUrl = selectedMemorial ? `${window.location.origin}/tumulo/${encodeURIComponent(selectedMemorial.localizacao)}` : '';
+    const qrCodeUrl = selectedMemorial ? `${window.location.origin}/memoriais/${selectedMemorial.id}` : '';
 
     // --- QR CODE DO LOTE ---
     const [isLoteQrModalOpen, setIsLoteQrModalOpen] = useState(false);
@@ -759,18 +754,18 @@ export default function AdminMemoriais() {
                 </div>
             )}
 
-            {/* --- MODAL QR CODE --- */}
+            {/* --- MODAL QR CODE DO FALECIDO --- */}
             {isQrModalOpen && selectedMemorial && (
                 <div className={styles.modalOverlay}>
                     <div className={styles.modalContentSmall}>
                         <div className={styles.modalHeader}>
-                            <h2>QR Code do Túmulo</h2>
+                            <h2>QR Code do Falecido</h2>
                             <button className={styles.closeBtn} onClick={() => setIsQrModalOpen(false)}><X size={24} /></button>
                         </div>
                         <div className={styles.qrContainer}>
-                            <p>Túmulo: <strong>{selectedMemorial.localizacao}</strong></p>
+                            <p>Falecido: <strong>{selectedMemorial.nome}</strong></p>
                             <p style={{ fontSize: '0.85rem', color: '#888', marginBottom: '16px' }}>
-                                {tumuloPeople.length} pessoa{tumuloPeople.length !== 1 ? 's' : ''} enterrada{tumuloPeople.length !== 1 ? 's' : ''}
+                                Ao escanear, abre o memorial de {selectedMemorial.nome}.
                             </p>
                             <div className={styles.qrCodeBox}>
                                 <QRCode value={qrCodeUrl} size={200} fgColor="#003366" />
