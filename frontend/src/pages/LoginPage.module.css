@@ -179,12 +179,13 @@
 .supportBox {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
   margin-top: 24px;
   padding: 14px 16px;
   border-radius: 16px;
-  background: #f5f7fb;
-  color: #57606a;
+  background: #dde0e6;
+  color: #5d6772;
 }
 
 .supportIcon {

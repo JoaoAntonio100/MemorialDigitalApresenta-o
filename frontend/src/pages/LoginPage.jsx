@@ -94,12 +94,7 @@ export default function LoginPage({ onLogin }) {
             </div>
             <div className={styles.brandText}>
               <p className={styles.eyebrow}>Portal institucional</p>
-              <h1>Bem-vindo ao Memorial Digital</h1>
             </div>
-          </div>
-
-          <div className={styles.intro}>
-            <p>Acesse o painel de gestão e zeladoria com segurança.</p>
           </div>
 
           <form className={styles.form} onSubmit={handleSubmit}>
@@ -155,7 +150,7 @@ export default function LoginPage({ onLogin }) {
 
           <div className={styles.supportBox}>
             <ShieldCheck size={18} className={styles.supportIcon} />
-            <p>Acesso restrito a administradores e zeladores autorizados.</p>
+            <p>Acesso restrito</p>
           </div>
 
           <Link to="/" className={styles.backLink}>
